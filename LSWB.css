@@ -1,0 +1,250 @@
+.topbar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: rgba(49,100,140,1);
+  height: 8%;
+  color: white;
+  font-weight: bold;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.topbarText {
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  margin-left: 20px;
+  font-size: 200%;
+  text-decoration: none;
+  white-space: nowrap;
+  float: left;
+  text-decoration: none;
+  color: inherit;
+}
+
+.login {
+  float: right;
+  border-radius: 0.5rem;
+  background-color: white;
+  color: rgba(49,100,140,1);
+  width: 150px;
+  height: 40%;
+  font-size: 100%;
+  font-weight: bold;
+  position: absolute;
+  top: 32%;
+  right: 3%;
+  
+  transition:all 0.9s, color 0.3;
+  cursor: pointer; 
+}
+
+.writebutton{
+  float:right;
+  border-radius: 0.5rem;
+  background-color: rgba(49,100,140,1);
+  color: white;
+  width: 150px;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 20px;
+  
+  cursor: pointer; 
+}
+.lpb_login{
+  border-radius: 0.5rem;
+  background-color: rgba(49,100,140,1);
+  color: white;
+  width: 150px;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  margin-left: 5%;
+  margin-top: 20px;
+  
+  cursor: pointer; 
+}
+.lpb_pw{
+  border-radius: 0.5rem;
+  background-color: rgba(49,100,140,1);
+  color: white;
+  width: 150px;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-top: 20px;
+  
+  cursor: pointer; 
+}
+.write_button{
+  display:inline-block;
+  float: right;
+  margin-right: 5%;
+}
+
+.login:hover{
+  color:#fff;
+}
+
+.hover3:hover{
+  box-shadow: 0 80px 0 0 rgba(49,100,140,0.25) inset,
+  0 -80px 0 0 rgba(49,100,140, 0.25) inset;
+}
+
+.hover4:hover{
+  box-shadow: 0 80px 0 0 rgb(255, 255, 255) inset,
+  0 -80px 0 0 rgba(255, 255, 255) inset;
+}
+#account{
+	margin-top:50px;
+	display:none;
+}
+.acsubmit{
+  border-radius: 0.5rem;
+  background-color: rgba(49,100,140,1);
+  color: white;
+  width: 150px;
+  height: 40px;
+  font-size: 100%;
+  font-weight: bold;
+  margin-left: 5%;
+  margin-top: 20px;
+  
+  cursor: pointer; 
+}
+.idisplay{
+	position: absolute;
+    top: 0%;
+    right: 7%;
+    transform: translate(50%,0);
+}
+.login_id, .login_pw{
+	margin-left : 5%;
+	font-weight: bold;
+	color: rgba(49,100,140,1);
+}
+
+.login_text{
+	width:120px;
+	height:24px;
+	font-size: 18px;
+}
+
+.pw{
+	width:100px;
+	height:25px;
+	font-size: 18px;
+}
+
+.center{
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, 0);
+  width: 1000px;
+}
+
+.postTitle{
+  display:inline-block;
+  text-align:left;
+  width:1000px;
+}
+
+.postWriter{
+  float:right;
+}
+
+.titleInput{
+  width: 1000px;
+  font-size: 20px;
+}
+
+#ifr {
+  width:1000px;
+  height:400px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body{
+  padding-top: 110px;
+}
+
+.board_list_wrap {
+  padding: 50px;
+}
+
+.board_list_head,
+.board_list_body .item {
+  padding: 10px 0;
+  font-size: 0;
+}
+
+.board_list_head {
+  border-top: 2px solid rgba(49,100,140,1);
+  border-bottom: 1px solid #ccc;
+}
+
+.board_list_body .item {
+  border-bottom: 1px solid #ccc;
+}
+
+.board_list_head > div,
+.board_list_body .item > div {
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+}
+
+.board_list_head > div {
+  font-weight: 600;
+}
+
+.board_list .num {
+  width: 10%;
+}
+
+.board_list .tit {
+  width: 55%;
+}
+
+.board_list_body div.tit {
+  text-align: left;
+}
+
+.board_list_body div.tit a:hover {
+  text-decoration: underline;
+}
+
+.board_list .writer {
+  width: 10%;
+}
+
+.board_list .date {
+  width: 25%;
+}
+
+.board_list .view {
+  width: 10%;
+}

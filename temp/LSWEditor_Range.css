@@ -1,0 +1,19 @@
+button {
+  color:aliceblue;
+  background-color: rgb(88, 99, 107); cursor: pointer; outline: none; box-shadow: 1px 4px 0 rgb(0,0,0,0.5); 
+}
+  
+button:active {
+  background-color: rgb(132, 167, 213);
+  box-shadow: 1px 1px 0 rgb(0,0,0,0.5); position: relative; top:2px;
+}
+
+#forecolor, #backcolor{
+  background-color: rgb(88, 99, 107); cursor: pointer; outline: none; box-shadow: 1px 1px 0 rgb(0,0,0,0.5); 
+}
+
+select{
+  color:aliceblue;
+  background-color: rgb(88, 99, 107); cursor: pointer; outline: none; box-shadow: 1px 4px 0 rgb(0,0,0,0.5); 
+}
+

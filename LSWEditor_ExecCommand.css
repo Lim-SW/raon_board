@@ -1,0 +1,35 @@
+::-webkit-scrollbar{
+  width: 6px;
+  margin: 0px;
+  padding: 0px;
+}
+
+::-webkit-scrollbar-thumb{
+  height: 17%;
+  background-color: rgba(49,100,140,1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track{
+  background-color: rgba(49,100,140,0.33);
+}
+
+button {
+  color:aliceblue;
+  background-color: rgb(88, 99, 107); cursor: pointer; outline: none; box-shadow: 1px 4px 0 rgb(0,0,0,0.5); 
+}
+  
+button:active {
+  background-color: rgb(132, 167, 213);
+  box-shadow: 1px 1px 0 rgb(0,0,0,0.5); position: relative; top:2px;
+}
+
+#forecolor, #backcolor{
+  background-color: rgb(88, 99, 107); cursor: pointer; outline: none; box-shadow: 1px 1px 0 rgb(0,0,0,0.5); 
+}
+
+select{
+  color:aliceblue;
+  background-color: rgb(88, 99, 107); cursor: pointer; outline: none; box-shadow: 1px 4px 0 rgb(0,0,0,0.5); 
+}
+
