@@ -18,7 +18,7 @@
 	<div class="board_list_wrap">
         <div class="board_list">
             <div class="board_list_head">
-                <div class="num">번호</div>
+                <!--<div class="num">번호</div>-->
                 <div class="tit">제목</div>
                 <div class="writer">글쓴이</div>
                 <div class="date">작성일</div>
@@ -29,8 +29,8 @@
         	List arr = new ArrayList(test.getPostList());
             for(int i=arr.size()-1;i>=0;i--){%>
                 <div class="item">
-                    <div class="num"><%=((ArrayList) arr.get(i)).get(0)%></div>
-                    <div class="tit"><a href='http://112.136.138.139:6522/LSWBoard/LSWB_view.jsp?num=<%=((ArrayList) arr.get(i)).get(0)%>'><%=((ArrayList) arr.get(i)).get(1)%></a></div>
+                    <!--<div class="num"><%=((ArrayList) arr.get(i)).get(0)%></div>-->
+                    <div class="tit"><a class="ml" href='http://112.136.138.139:6522/LSWBoard/LSWB_view.jsp?num=<%=((ArrayList) arr.get(i)).get(0)%>'><%=((ArrayList) arr.get(i)).get(1)%></a></div>
                     <div class="writer"><%=((ArrayList) arr.get(i)).get(2)%></div>
                     <%Object temp = ((ArrayList) arr.get(i)).get(3);
                     String str = temp.toString();
