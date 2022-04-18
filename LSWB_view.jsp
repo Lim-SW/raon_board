@@ -48,10 +48,10 @@
 	    </div>
 	    <iframe id="ifr"></iframe>
 
-		<button id="dnld" class="writebutton" type="button">다운로드</button>
+		<button id="dnld" class="writebutton" type="button">파일다운로드</button>
 		<%
 		if(userid.equals((String)session.getAttribute("id"))){ %>
-		<button id="del" class="writebutton" type="button">삭제</button>
+		<button id="del" class="writebutton" type="button">게시글삭제</button>
 		<%} %>
 		<%} %>
 	</div>
@@ -90,7 +90,7 @@ content = viewPage.getContent(number);
     
     var dlButton = document.getElementById('del');
     if(dlButton!=null)dlButton.onclick = function(){
-        var yn = confirm("삭제하시겠습니까?");
+        var yn = confirm("게시글을 삭제하시겠습니까?");
         if(yn){
             var postNum = window.location.search.split("num=")[1];
             var formData = new FormData();

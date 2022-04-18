@@ -37,7 +37,7 @@ LSWEditorPrototype.prototype.loadFunc = {
 
         // 버튼영역
         var buttonPlace = document.createElement('iframe');
-        buttonPlace.id = 'buttonPlace'
+        buttonPlace.id = 'buttonPlace'+id;
         buttonPlace.frameBorder = 0;
         buttonPlace.style.height = '60px';
         buttonPlace.style.width = width+'px';
@@ -115,7 +115,7 @@ LSWEditorPrototype.prototype.loadFunc = {
 
         // 에디터영역
         var editPlace = document.createElement('iframe');
-        editPlace.id = 'editPlace';
+        editPlace.id = 'editPlace'+id;
         editPlace.src = 'about:blank';
         editPlace.className = 'editPlace'
         editPlace.frameBorder = 0;
@@ -237,7 +237,7 @@ LSWEditorPrototype.prototype.loadFunc = {
                     select.appendChild(temp);
         
                     select.onmousedown = function(){
-                        var buttonPlace = document.getElementById('buttonPlace');
+                        var buttonPlace = document.getElementById('buttonPlace'+id);
                         if(this.id=='select size'){
                             buttonPlace.contentDocument.getElementById('글자크기').selected = true;
                         }
@@ -255,7 +255,7 @@ LSWEditorPrototype.prototype.loadFunc = {
                     }
         
                     select.onchange = function(m) {
-                        var editPlace = document.getElementById('editPlace');
+                        var editPlace = document.getElementById('editPlace'+id);
                         if(ifKey=='size'){
                             ApplyExCo("FontSize",false,select.options[select.selectedIndex].value)
                         }
@@ -275,7 +275,7 @@ LSWEditorPrototype.prototype.loadFunc = {
         }
         
         function ApplyExCo(param1, param2, param3){ // execcommand 적용 통합
-            var editPlace = document.getElementById('editPlace');
+            var editPlace = document.getElementById('editPlace'+id);
             if(IsIE()){
                 ForIE(param1, param2, param3);
             }
@@ -295,7 +295,7 @@ LSWEditorPrototype.prototype.loadFunc = {
         }
         
         function PreViewPop(content, width){ // 미리보기 팝업 함수
-            var editPlace = document.getElementById('editPlace');
+            var editPlace = document.getElementById('editPlace'+id);
             if(IsIE()){
                 window.open("LSWEditor_Preview.html",content,'width='+width+',height='+editPlace.offsetHeight+',toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes');    
             }
@@ -310,7 +310,7 @@ LSWEditorPrototype.prototype.loadFunc = {
         }
         
         function ForIE(param1, param2, param3){ // 브라우저 IE 면 selection, range도 적용
-            var editPlace = document.getElementById('editPlace');
+            var editPlace = document.getElementById('editPlace'+id);
             var s = editPlace.contentDocument.getSelection();
             var selRange = s.getRangeAt(0);
         
@@ -350,7 +350,7 @@ LSWEditorPrototype.prototype.loadFunc = {
             colorPicker.appendChild(cLabel);
             
             colorPicker.onchange = function(e){
-                var editPlace = document.getElementById('editPlace');
+                var editPlace = document.getElementById('editPlace'+id);
                 ApplyExCo(name,false,e.target.value);
                 editPlace.contentDocument.body.focus();
             }
@@ -392,8 +392,8 @@ LSWEditorPrototype.prototype.loadFunc = {
         }
         
         function CheckStyle(){ // 현재 적용된 스타일 확인 함수
-            var buttonPlace = document.getElementById('buttonPlace');
-            var editPlace = document.getElementById('editPlace');
+            var buttonPlace = document.getElementById('buttonPlace'+id);
+            var editPlace = document.getElementById('editPlace'+id);
             var checkList = {'bold':'B','italic':'I','underline':'U','StrikeThrough':'S',
             /*'justifyFull':'Full','justifyLeft':'Left','justifyCenter':'Center','justifyRight':'Right'*/}
         
@@ -432,7 +432,7 @@ LSWEditorPrototype.prototype.loadFunc = {
         }
         
         function AddP(editPlace){ // 에디터영역 맨 처음부분에 P태그 없을시 추가해주는 함수
-            var editPlace = document.getElementById('editPlace');
+            var editPlace = document.getElementById('editPlace'+id);
             // p 태그 추가 후 포커스 조절
             var s = editPlace.contentDocument.getSelection();
             var selRange = s.getRangeAt(0);
