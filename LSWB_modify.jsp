@@ -26,7 +26,7 @@
     			<input id="title" class = 'titleInput' type="text" maxlength='30' placeholder="제목을 입력해주세요. (최대 30글자)" value="<%=title%>"></input>
     		</div>
     	</div>
-    	<button class="writebutton" type="button" onclick=send();>취소</button>
+    	<button class="writebutton" type="button" onclick=back();>취소</button>
 		<button id="send" class="writebutton" type="button" onclick=send();>수정 완료</button>
 	</div>
 	<%}else{ %>
@@ -48,6 +48,10 @@
 	}
 	LSWEditor.loadFunc.LoadLSWEditor();
 	
+	function back(){
+		window.location = document.referrer;
+	}
+	
 	function send(){
 		var button = document.getElementById('send');
 		var title = document.getElementById('title');
@@ -59,7 +63,7 @@
 		}
 		else{
 			LSWup.eventList.OnMoveFileDone_LSW = function (){
-				setTimeout(function (){location.href="http://112.136.138.139:6522/LSWBoard/LSWB_main.jsp";}, 800);
+				setTimeout(function (){location.href="http://112.136.138.139:6522/LSWBoard/LSWB_view.jsp?num="+<%=postNum%>;}, 800);
 			}
 			if(LSWup.APIList.LswIsFileThereAPI('LSWup')!=0){
 				LSWup.eventList.OnUpLoadDone_LSW = function(randNum,result){

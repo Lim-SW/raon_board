@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8" />
 	<link href="favicon.ico" rel="icon" type="image/x-icon" />
-	<title>LSWB_login</title>
+	<title>LSWBoard_login</title>
 </head>
  <jsp:include page="LSWB_header.jsp"></jsp:include>
 <body>

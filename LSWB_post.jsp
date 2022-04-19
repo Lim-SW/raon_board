@@ -23,7 +23,7 @@
 	</div>
 	<%}
 	else{%>
-	<h1>PLEASE LOGIN</h1>
+	<h1>This is not proper access</h1>
 	<%} %>
 
 </body>
