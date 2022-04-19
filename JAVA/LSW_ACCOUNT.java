@@ -53,7 +53,7 @@ public class LSW_ACCOUNT extends HttpServlet {
 	        }
 	        if(IsID=="") {
 	        	int rs2 = stmt.executeUpdate("IF NOT EXISTS(SELECT id FROM LSW_user where id='"+id+"') "
-	        			+ "BEGIN INSERT INTO LSW_user values('"+id+"','"+pw+"') END");
+	        			+ "BEGIN INSERT INTO LSW_user values('"+id+"',PwdEncrypt('"+pw+"')) END");
 	        	response.getWriter().write("");
 	        }
 	        else {

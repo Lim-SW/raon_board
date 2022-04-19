@@ -12,7 +12,6 @@
 </head>
 <jsp:include page="LSWB_header.jsp"></jsp:include>
 <body>
-    <div class = "center">
     <% 
         String number = request.getParameter("num");
         LSW_SQL viewPage = new LSW_SQL();
@@ -35,7 +34,8 @@
 		    modify = modifyS[0];
 	    }
 	    else{modify = "Last Modified : -";}
-    %>
+		if(number!=null){ %>
+    <div class = "center">
 			<div class="postTitle">
 	    	<h1><%=title %></h1>
 	    	<h5>Posted : <%=dateS[0] %></h5>
@@ -51,10 +51,14 @@
 		<button id="dnld" class="writebutton" type="button">파일다운로드</button>
 		<%
 		if(userid.equals((String)session.getAttribute("id"))){ %>
-		<button id="del" class="writebutton" type="button">게시글삭제</button>
+		<button id="del" class="writebutton" type="button" onclick=del();>게시글삭제</button>
+		<button id="modify" class="writebutton" type="button" onclick=submit();>게시글수정</button>
 		<%} %>
 		<%} %>
 	</div>
+	<%} else{ %>
+	<h1>This is not proper access</h1>
+	<%} %>
 </body>
 
 <% 	
@@ -65,7 +69,7 @@ content = viewPage.getContent(number);
 <script>
 
     var LSWdown = new LSWUpDownPrototype('sample', 'LSWdown', 1000, 300, 'Download', 1);
-    LSWdown.eventList.OnIframeLoaded_LSW = function(){
+    LSWdown.eventList.OnDownIframeLoaded_LSW = function(){
         LSWdown.APIList.LswRefreshAPI('LSWdown','<%=number%>');
     }
     LSWdown.loadFunc.LoadLSWUpDown();
@@ -88,8 +92,7 @@ content = viewPage.getContent(number);
         }
     }
     
-    var dlButton = document.getElementById('del');
-    if(dlButton!=null)dlButton.onclick = function(){
+    function del(){
         var yn = confirm("게시글을 삭제하시겠습니까?");
         if(yn){
             var postNum = window.location.search.split("num=")[1];
@@ -104,6 +107,19 @@ content = viewPage.getContent(number);
                 }
             }
         }
+    }
+    
+    function submit(){
+    	var sub = document.createElement('form');
+        sub.action="./LSWB_modify.jsp";
+        sub.method = 'post';
+        var postNum = document.createElement('input');
+        postNum.type = 'hidden';
+        postNum.name = 'postNum';
+        postNum.value = "<%=number%>";
+        sub.appendChild(postNum);
+        document.body.appendChild(sub);
+        sub.submit();
     }
     
 </script>

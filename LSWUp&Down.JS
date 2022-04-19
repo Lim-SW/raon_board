@@ -161,10 +161,10 @@ LSWUpDownPrototype.prototype.loadFunc = { // UI 생성 및 업&다운로드 기�
                 deleteFile.onclick = function () { LSWUpDownPrototype.prototype.funcList.ControlFile(dn[0], 'delete',id,LSWUpDownPrototype.prototype.option.wl.get(id),dn[1]); }
                 var clearFiles = AddB(dn[1], 'button', 'clearFiles', '전부삭제');
                 clearFiles.onclick = function () { LSWUpDownPrototype.prototype.funcList.ClearList(dn[0], '삭제', '', dn[2],id); }
-                var startDownload = AddB(dn[1], 'form', 'startDownload', '다운로드시작');
-                startDownload[1].onclick = function () {
-                    LSWUpDownPrototype.prototype.funcList.ControlFile(dn[0],'download',id,LSWUpDownPrototype.prototype.option.wl.get(id),startDownload,dn[1]);
-                }
+                //var startDownload = AddB(dn[1], 'form', 'startDownload', '다운로드시작');
+                //startDownload[1].onclick = function () {
+                //    LSWUpDownPrototype.prototype.funcList.ControlFile(dn[0],'download',id,LSWUpDownPrototype.prototype.option.wl.get(id),startDownload,dn[1]);
+                //}
             }
         }
 
@@ -223,8 +223,8 @@ LSWUpDownPrototype.prototype.loadFunc = { // UI 생성 및 업&다운로드 기�
                     Place.contentDocument.body.style.marginRight = '0px';
                 }
                 Place.contentDocument.body.style.margin = '0';
-                //if (key == 'Download') { LSWUpDownPrototype.prototype.funcList.ListFiles(fileListDiv); }
-                LSWUpDownPrototype.prototype.eventList.OnIframeLoaded_LSW(Place);
+                if (key == 'Download') { LSWUpDownPrototype.prototype.eventList.OnDownIframeLoaded_LSW(Place); }
+                else if (key == 'Upload') {LSWUpDownPrototype.prototype.eventList.OnUpIframeLoaded_LSW(Place);}
                 LoadCSS(Place);
             });
 
@@ -395,7 +395,11 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
         console.log(result); // result[] = 삭제가 완료된 파일 목록
     },
     
-    OnIframeLoaded_LSW : function (Iframe) { // 온로드
+    OnDownIframeLoaded_LSW : function (Iframe) { // 온로드
+        LSWUpDownPrototype.prototype.option.loaded(Iframe); // Iframe = 생성된 창의 Iframe객체
+    },
+
+    OnUpIframeLoaded_LSW : function (Iframe) { // 온로드
         LSWUpDownPrototype.prototype.option.loaded(Iframe); // Iframe = 생성된 창의 Iframe객체
     },
 
@@ -481,13 +485,14 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
 
     },
 
-    LswInsertPostAPI:function (title,content,userid,randNum,result){ // DB에 게시글 저장
+    LswInsertPostAPI:function (title,content,userid,option,randNum,result){ // DB에 게시글 저장
         var formData = new FormData();
         var req = new XMLHttpRequest();
         req.open("POST", '/LSWBoard/LSW_SEND');
         formData.append('title',title);
         formData.append('content',content);
         formData.append('userid',userid);
+        formData.append('option',option);
         req.send(formData);
         req.onreadystatechange = function () {
             if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {

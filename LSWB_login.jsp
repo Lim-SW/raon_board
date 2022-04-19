@@ -9,6 +9,11 @@
 </head>
  <jsp:include page="LSWB_header.jsp"></jsp:include>
 <body>
+<%
+	boolean tf = false;
+	if((String)session.getAttribute("id")==null) {
+		tf = true;
+%>
 <div>
 	<h2 class="login_id">ID : 
 	<input id="lpb_login" class="login_text" type="text" maxlength='10'></input>
@@ -30,8 +35,11 @@
 	</h2>
 	<button class="acsubmit" type="button" onclick=createAccount();>입력완료</button>
 </div>
+<%} %>
 </body>
 <script>
+	if(!<%=tf%>){location.href="http://112.136.138.139:6522/LSWBoard/LSWB_main.jsp";}
+	
 	function displayAccount(){
 		document.getElementById("account").style.display="block";
 	}

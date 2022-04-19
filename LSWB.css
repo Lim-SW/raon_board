@@ -91,7 +91,7 @@
   cursor: pointer; 
 }
 .write_button{
-  display:inline-block;
+  display:block;
   float: right;
   margin-right: 5%;
 }

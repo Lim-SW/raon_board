@@ -48,12 +48,12 @@ public class LSW_LOGIN extends HttpServlet {
 		try (Connection connection = DriverManager.getConnection(connectionUrl);) {
 			if(option.equals("login")) {
 				Statement stmt = connection.createStatement();
-	        	ResultSet rs = stmt.executeQuery("SELECT password FROM LSW_user where id='"+id+"'");
-	        	String DBPW = "";
+	        	ResultSet rs = stmt.executeQuery("select PwdCompare('"+pw+"', (select password from LSW_user where id='"+id+"')) from LSW_user");
+	        	int DBPW = 0;
 		        while(rs.next()) {
-		        	DBPW = rs.getString(1);
+		        	DBPW = rs.getInt(1);
 		        }
-		        if(pw.equals(DBPW)) {
+		        if(DBPW==1) {
 		        	HttpSession session = request.getSession();
 		        	session.setAttribute("id", id);
 		        }

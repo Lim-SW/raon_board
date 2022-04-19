@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -36,6 +35,8 @@ public class LSW_SEND extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String userid = request.getParameter("userid");
+		String option = request.getParameter("option");
+		
 		
     	try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -53,15 +54,29 @@ public class LSW_SEND extends HttpServlet {
  
         try (Connection connection = DriverManager.getConnection(connectionUrl);) {
         	Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(number) FROM LSW_post");
-            int number = 0;
+        	ResultSet rs;
+        	int number = 0;
+        	
+        	if(option.contains("modify")) {
+        		rs = stmt.executeQuery("SELECT COUNT(number) FROM LSW_post");
+        		number = Integer.parseInt(option.split("/")[1]);
+        	}
+        	else {
+        		rs = stmt.executeQuery("SELECT COUNT(number) FROM LSW_post");
+        		while(rs.next()) {
+                	number = rs.getInt(1)+1;
+                }
+        	}
             
-            while(rs.next()) {
-            	number = rs.getInt(1)+1;
-            }
             response.getWriter().write(String.valueOf(number));
             stmt = connection.createStatement();
-            int res = stmt.executeUpdate("insert into LSW_post values ("+number+",'"+title+"','"+userid+"',GETUTCDATE(),null,'"+content+"',0)");
+            
+            if(option.contains("modify")) {
+            	stmt.executeUpdate("UPDATE LSW_post SET title='"+title+"', content='"+content+"', modified=GETUTCDATE() where number="+option.split("/")[1]);
+            }
+            else {
+            	stmt.executeUpdate("insert into LSW_post values ("+number+",'"+title+"','"+userid+"',GETUTCDATE(),null,'"+content+"',0)");
+            }
         }
         catch (SQLException e) {
             e.printStackTrace();

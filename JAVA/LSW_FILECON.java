@@ -59,7 +59,16 @@ public class LSW_FILECON extends HttpServlet {
 				Path oldfile = Paths.get(path+"\\["+randNum+"] "+name);
 				Path newfile = Paths.get(realPath+"\\["+postNum+"] "+name);
 				File nf = new File(realPath+"\\["+postNum+"] "+name);
-
+				int n = 1;
+				String newName = "";
+				while(nf.exists()) {
+					int li = name.lastIndexOf(".");
+					newName = name.substring(0, li)+"("+n+")"+name.substring(li, name.length());
+					newfile = Paths.get(realPath+"\\["+postNum+"] "+newName);
+					nf = new File(realPath+"\\["+postNum+"] "+newName);
+					n++;
+				}
+				if(newName!="") {log+="└><중복된 파일명 변경> "+newName+"\n";}
 				Files.move(oldfile, newfile, StandardCopyOption.ATOMIC_MOVE);
 				checkFile.delete();
 			}
@@ -79,7 +88,6 @@ public class LSW_FILECON extends HttpServlet {
 		if(!exist || str == null) {
 			writer.write(postNum+"\n");
 		}
-		
 		
 		reader.close();
 		writer.close();

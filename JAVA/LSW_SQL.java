@@ -8,36 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
  
 public class LSW_SQL {
-    public void test() throws ClassNotFoundException {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
-        
-        /*
-        String connectionUrl =
-                "jdbc:sqlserver://localhost:1433;"
-                        + "database=LSWBoard;"
-                        + "user=LSWB_admin;"
-                        + "password=admin6521;"
-        				+ "encrypt=true;trustServerCertificate=true;";
- 
-        try (Connection connection = DriverManager.getConnection(connectionUrl);) {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES");
-            
-            while(rs.next()) {
-            	System.out.println(rs.getString(3));
-            }
-        
-            rs.close();
-            stmt.close();
-            connection.close();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        */
-        
-    }
-    
+
     public ArrayList getPostList() throws ClassNotFoundException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
         ArrayList arr = new ArrayList();
@@ -54,13 +25,6 @@ public class LSW_SQL {
             
             while(rs.next()) {
             	ArrayList al = new ArrayList();
-            	/*
-            	System.out.println("게시물번호:"+rs.getInt(1));
-            	System.out.println("제목:"+rs.getString(2));
-            	System.out.println("작성자:"+rs.getString(3));
-            	System.out.println("작성일자:"+rs.getTimestamp(4));
-            	System.out.println("내용:"+rs.getString(6));
-            	*/
             	al.add(rs.getInt(1));
             	al.add(rs.getString(2));
             	al.add(rs.getString(3));

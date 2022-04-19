@@ -33,7 +33,12 @@ LSWEditorPrototype.prototype.loadFunc = {
         div1.style.border = '2px solid gray';
         div1.style.overflow = 'hidden';
 
-        document.getElementById(divName).appendChild(div1); // 받아온 div아래에 에디터 추가
+        var clientDiv = document.getElementById(divName);
+        if(clientDiv == null){
+            console.log("LSWEditor\n※div를 찾을수 없습니다.※\n입력하신 divId = "+divName+"\n※Error: divId="+divName+"가 존재하지않아 Id="+id+" 생성 오류※");
+            return 0;
+        }
+        clientDiv.appendChild(div1); // 받아온 div아래에 에디터 추가
 
         // 버튼영역
         var buttonPlace = document.createElement('iframe');
@@ -104,7 +109,7 @@ LSWEditorPrototype.prototype.loadFunc = {
             var prevBut = document.createElement('button');
             prevBut.id = 'prevBut';
             prevBut.innerText = 'Preview';
-            prevBut.onclick = function(){PreViewPop('test',width)};
+            prevBut.onclick = function(){PreViewPop(id,width)};
             prevBut.style.float = 'right';
             buttonPlace_div1.appendChild(prevBut);
 
@@ -152,7 +157,7 @@ LSWEditorPrototype.prototype.loadFunc = {
                 }
             }
 
-            LSW_editPlace = editPlace;
+            LSWEditorPrototype.prototype.eventList.OnEditorLoaded_LSW(id,editPlace);
         })
 
         div1.appendChild(editPlace); // 전체영역에 에디터영역 추가
@@ -469,5 +474,17 @@ LSWEditorPrototype.prototype.APIList = {
         var HTMLValue = editPlace.contentDocument.body.innerHTML;
     
         return HTMLValue;
+    },
+
+    setContentOnEditor:function (id, htmlValue){
+        var editPlace = LSWEditorPrototype.prototype.APIList.getLSWEditPlaceById(id);
+        editPlace.contentDocument.body.innerHTML = htmlValue;
     }
+}
+
+LSWEditorPrototype.prototype.eventList = {
+    OnEditorLoaded_LSW : function (id, Iframe) { // 온로드 완료시
+        console.log("Default onload Message id="+id);
+        console.log(Iframe);
+    },
 }

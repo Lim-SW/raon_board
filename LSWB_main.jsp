@@ -25,8 +25,8 @@
             </div>
             <div class="board_list_body">
             <%
-            LSW_SQL test = new LSW_SQL();
-        	List arr = new ArrayList(test.getPostList());
+            LSW_SQL lsql = new LSW_SQL();
+        	List arr = new ArrayList(lsql.getPostList());
             for(int i=arr.size()-1;i>=0;i--){%>
                 <div class="item">
                     <!--<div class="num"><%=((ArrayList) arr.get(i)).get(0)%></div>-->

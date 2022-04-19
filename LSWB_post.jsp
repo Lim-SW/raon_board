@@ -19,7 +19,7 @@
     			<input id="title" class = 'titleInput' type="text" maxlength='30' placeholder="제목을 입력해주세요. (최대 30글자)"></input>
     		</div>
 		</div>
-		<button id="send" class="writebutton" type="button">작성 완료</button>
+		<button id="send" class="writebutton" type="button" onclick=send();>작성 완료</button>
 	</div>
 	<%}
 	else{%>
@@ -38,10 +38,9 @@
 	var LSWEditor = new LSWEditorPrototype('lsw1', 1000, 400, 'sample');
 	LSWEditor.loadFunc.LoadLSWEditor();
 	
-	var button = document.getElementById('send');
-	var title = document.getElementById('title');
-	
-	button.onclick = function(){
+	function send(){
+		var button = document.getElementById('send');
+		var title = document.getElementById('title');
 		var titleStr = title.value;
 		var content = LSWEditor.APIList.getLSWEditPlaceValueById('lsw1');
 		var userid = '<%=(String)session.getAttribute("id")%>'
@@ -54,12 +53,12 @@
 			}
 			if(LSWup.APIList.LswIsFileThereAPI('LSWup')!=0){
 				LSWup.eventList.OnUpLoadDone_LSW = function(randNum,result){
-		            LSWup.APIList.LswInsertPostAPI(titleStr,content,userid,randNum,result);
+		            LSWup.APIList.LswInsertPostAPI(titleStr,content,userid,'post',randNum,result);
 	            }
 	            LSWup.APIList.LswFileUpAPI('LSWup');
 			}
 			else{
-				LSWup.APIList.LswInsertPostAPI(titleStr,content,userid);
+				LSWup.APIList.LswInsertPostAPI(titleStr,content,userid,'post');
 			}
             
 	        LSWup.eventList.OnStartUpload_LSW = function(){
