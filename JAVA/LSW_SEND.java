@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class LSW_SEND
- */
 @WebServlet("/LSW_SEND")
 @MultipartConfig(fileSizeThreshold = 1024,maxFileSize = -1,maxRequestSize = -1)
 public class LSW_SEND extends HttpServlet {
@@ -37,7 +34,6 @@ public class LSW_SEND extends HttpServlet {
 		String userid = request.getParameter("userid");
 		String option = request.getParameter("option");
 		
-		
     	try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (ClassNotFoundException e1) {
@@ -55,24 +51,42 @@ public class LSW_SEND extends HttpServlet {
         try (Connection connection = DriverManager.getConnection(connectionUrl);) {
         	Statement stmt = connection.createStatement();
         	ResultSet rs;
-        	int number = 0;
+        	String number = "";
+        	String filename = "";
+        	String filesize = "";
+        	String path = "";
         	
-        	if(option.contains("modify")) {
-        		rs = stmt.executeQuery("SELECT COUNT(number) FROM LSW_post");
-        		number = Integer.parseInt(option.split("/")[1]);
+        	if(option.equals("modify")) {
+        		number = request.getParameter("postNum");
+        	}
+        	else if(option.equals("delete")) {
+        		number = request.getParameter("postNum");
+        		filename = request.getParameter("filename");
+        	}
+        	else if(option.equals("insert")) {
+        		number = request.getParameter("postNum");
+        		filename = request.getParameter("filename");
+        		filesize = request.getParameter("filesize");
+        		path = request.getParameter("path")+"\\["+number+"] "+filename;
         	}
         	else {
         		rs = stmt.executeQuery("SELECT COUNT(number) FROM LSW_post");
         		while(rs.next()) {
-                	number = rs.getInt(1)+1;
+                	number = String.valueOf(rs.getInt(1)+1);
                 }
         	}
             
             response.getWriter().write(String.valueOf(number));
             stmt = connection.createStatement();
             
-            if(option.contains("modify")) {
-            	stmt.executeUpdate("UPDATE LSW_post SET title='"+title+"', content='"+content+"', modified=GETUTCDATE() where number="+option.split("/")[1]);
+            if(option.equals("modify")) {
+            	stmt.executeUpdate("UPDATE LSW_post SET title='"+title+"', content='"+content+"', modified=GETUTCDATE() where number="+number);
+            }
+            else if(option.equals("delete")) {
+            	stmt.executeUpdate("DELETE FROM LSW_files where postNum ="+number+" AND name ='"+filename+"'");
+            }
+            else if(option.equals("insert")) {
+            	stmt.executeUpdate("insert into LSW_files values ("+number+",'"+filename+"',"+filesize+", '"+path+"')");
             }
             else {
             	stmt.executeUpdate("insert into LSW_post values ("+number+",'"+title+"','"+userid+"',GETUTCDATE(),null,'"+content+"',0)");

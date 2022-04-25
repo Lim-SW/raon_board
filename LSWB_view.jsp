@@ -20,6 +20,7 @@
         String date = viewPage.getPosted(number);
         String modify = viewPage.getModified(number);
         String[] dateS = new String[1];
+        String filelist = viewPage.getFiles(number);
         
         if (date!=null){
             StringTokenizer stringTokenizer = new StringTokenizer( date, "." );
@@ -51,8 +52,8 @@
 		<button id="dnld" class="writebutton" type="button">파일다운로드</button>
 		<%
 		if(userid.equals((String)session.getAttribute("id"))){ %>
-		<button id="del" class="writebutton" type="button" onclick=del();>게시글삭제</button>
-		<button id="modify" class="writebutton" type="button" onclick=submit();>게시글수정</button>
+		<button id="del" class="writebutton" type="button">게시글삭제</button>
+		<button id="modify" class="writebutton" type="button">게시글수정</button>
 		<%} %>
 		<%} %>
 	</div>
@@ -67,61 +68,7 @@ content = viewPage.getContent(number);
 %>
 
 <script>
-
-    var LSWdown = new LSWUpDownPrototype('sample', 'LSWdown', 1000, 300, 'Download', 1);
-    LSWdown.eventList.OnDownIframeLoaded_LSW = function(){
-        LSWdown.APIList.LswRefreshAPI('LSWdown','<%=number%>');
-    }
-    LSWdown.loadFunc.LoadLSWUpDown();
-	
-    var content = '<%=content%>';
-    LSWdown.APIList.LswPostContentAPI('ifr', content);
-    
-    var dnButton = document.getElementById('dnld');
-    LSWdown.eventList.OnRefreshDone_LSW = function(){
-       	if(LSWdown.APIList.LswIsDownThereAPI('LSWdown')==0){dnButton.style.display='none';}
-    }
-    
-    if(dnButton!=null)dnButton.onclick = function(){
-    	LSWdown.APIList.LswFileDownAPI('LSWdown');
-    	LSWdown.eventList.OnStartDownload_LSW = function(){
-    		dnButton.disabled = true;
-    	}
-    	LSWdown.eventList.OnDownLoadDone_LSW = function(){
-           	dnButton.disabled = false;
-        }
-    }
-    
-    function del(){
-        var yn = confirm("게시글을 삭제하시겠습니까?");
-        if(yn){
-            var postNum = window.location.search.split("num=")[1];
-            var formData = new FormData();
-            var req = new XMLHttpRequest();
-            req.open("POST", '/LSWBoard/LSW_DELETE');
-            formData.append('postNum',postNum);
-            req.send(formData);
-			req.onreadystatechange = function () {
-                if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-                    location.href="http://112.136.138.139:6522/LSWBoard/LSWB_main.jsp";
-                }
-            }
-        }
-    }
-    
-    function submit(){
-    	var sub = document.createElement('form');
-        sub.action="./LSWB_modify.jsp";
-        sub.method = 'post';
-        var postNum = document.createElement('input');
-        postNum.type = 'hidden';
-        postNum.name = 'postNum';
-        postNum.value = "<%=number%>";
-        sub.appendChild(postNum);
-        document.body.appendChild(sub);
-        sub.submit();
-    }
-    
+	viewjsp("<%=number%>",'<%=content%>','<%=userid%>','<%=filelist%>');
 </script>
 
 </html>

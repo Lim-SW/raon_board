@@ -1,3 +1,96 @@
+.selectcontainer{
+	padding:50px;
+	margin-bottom:30px;
+	border: 2px solid rgba(49,100,140,1);
+}
+.selectcontainer h2{
+	float:left;
+	margin:10px;
+}
+.selectcontainer h2 .last{
+	margin:10px;
+}
+.selectcontainer select {
+  background-color: #0563af;
+  color: white;
+  padding: 12px;
+  width: 250px;
+  border: none;
+  font-size: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  -webkit-appearance: button;
+  appearance: button;
+  outline: none;
+  float:left;
+}
+
+.selectcontainer select option {
+  padding: 30px;
+}
+.path{
+	width: 400px;
+    height: 35px;
+    font-size: 20px;
+}
+
+.apply{
+  border-radius: 0.5rem;
+  background-color: rgba(49,100,140,1);
+  color: white;
+  width: 100px;
+  height:45px;
+  font-size: 100%;
+  font-weight: bold;
+  margin-left:15px;
+  
+  cursor: pointer; 
+}
+
+.admin_login{
+	position: absolute;
+    right: 50%;
+    left: 50%;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid gray;
+    width: 300px;
+    height: 75px;
+    padding: 5px;
+}
+.admin_banner{
+	position: absolute;
+    right: 50%;
+    left: 50%;
+    width: 210px;
+    transform: translate(-50%, -50%);
+    top: 42%;
+    font-weight: bold;
+	color: rgba(49,100,140,1);
+}
+.admin_button{
+	position: absolute;
+    right: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    font-size: 30px;
+    top: 60%;
+    color: white;
+    background: rgba(49,100,140,1);
+    font-weight: bold;
+    cursor: pointer;
+}
+.admin_id, .admin_pw{
+	font-weight: bold;
+	color: rgba(49,100,140,1);
+	top : 50%;
+	bottom: 50%;
+}
+#container2{
+	padding:50px;
+	color : rgba(49,100,140,1);
+}
 .topbar {
   position: relative;
   display: flex;

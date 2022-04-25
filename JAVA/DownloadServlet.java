@@ -17,14 +17,14 @@ import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oreilly.servlet.MultipartRequest;
-
 @WebServlet("/DownloadServlet")
+@MultipartConfig(fileSizeThreshold = 1024,maxFileSize = -1,maxRequestSize = -1)
 public class DownloadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private static Map<Object, Object> percentIp = new HashMap<>();
@@ -48,7 +48,10 @@ public class DownloadServlet extends HttpServlet {
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String path = "D:\\LSWUpload\\Uploaded\\";
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		
+		String path = request.getParameter("path")+request.getParameter("folder")+"\\";
 		String val = "";
 		int size = (1024 * 1024 * 2000) + 1;
 		LocalDateTime now = LocalDateTime.now();
@@ -58,25 +61,27 @@ public class DownloadServlet extends HttpServlet {
 	    
 	    String log = "\n";
 		
-		MultipartRequest multi = new MultipartRequest(request, path, size, "UTF-8");
+		//MultipartRequest multi = new MultipartRequest(request, path, size, "UTF-8");
 		
-		Enumeration<?> fileNames = multi.getParameterNames();
+		Enumeration<?> fileNames = request.getParameterNames();
 		
     	File file = null;
     	List<File> files = new ArrayList<>();
-    	String randomnumber = multi.getParameter("randomNumber");;
+    	String randomnumber = request.getParameter("randomNumber");;
 		double progressD = 0;
 		double whole = 0;
 		double percent = 0;
-		String postNum = multi.getParameter("postNum");
+		String postNum = request.getParameter("postNum");
+		String fn = "";
 
 		log+="========="+ip+"=========\n";
     	log+="==="+formdatenow+"==\n";
     	while(fileNames.hasMoreElements()) {
-    		path = "D:\\LSWUpload\\Uploaded\\";
+    		path = request.getParameter("path")+request.getParameter("folder")+"\\";
 			val = (String) fileNames.nextElement();
-			val = multi.getParameter(val);
+			val = request.getParameter(val);
 			if(val.contains(".")) {
+				fn=val;
 				path += "["+postNum+"] "+val;
 				file = new File(path);
 				files.add(file);
@@ -88,7 +93,6 @@ public class DownloadServlet extends HttpServlet {
 		}
 
 		log+="=================================";
-		
 		if(files.size()>1) {
 			File zip = new File("D:\\LSWUpload\\LSWUp&Down_"+ip+", "+formdatenow+".zip");
 			//System.out.println(zip);
@@ -98,7 +102,7 @@ public class DownloadServlet extends HttpServlet {
 	        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zip))) {
 	            for (File f : files) {
 	            	String tag = "["+postNum+"] ";
-	            	path = "D:\\LSWUpload\\Uploaded\\";
+	            	path = request.getParameter("path")+request.getParameter("folder")+"\\";
 	            	f.renameTo(new File(path+f.getName().replace(tag, "")));
 	            	f = new File(path+f.getName().replace(tag, ""));
 	                try (FileInputStream in = new FileInputStream(f)) {
@@ -156,8 +160,8 @@ public class DownloadServlet extends HttpServlet {
 			String mimeType = getServletContext().getMimeType(file.toString());
 			mimeType = "application/octet-stream";
 			response.setContentType(mimeType);
-			String fileName = val;
-			String sEncoding = new String(fileName.getBytes("euc-kr"),"8859_1");
+			String fileName = fn;
+			String sEncoding = new String(fileName.getBytes("UTF-8"),"8859_1");
 		    String value = "attachment;filename=\""+sEncoding+"\"";
 		    response.setHeader("Content-Disposition", value);
 		    //response.setContentLengthLong(file.length());

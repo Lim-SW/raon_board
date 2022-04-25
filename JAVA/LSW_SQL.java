@@ -228,4 +228,30 @@ public class LSW_SQL {
 		return 0;
     }
     
+    public String getFiles(String num) throws ClassNotFoundException{
+    	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
+        String connectionUrl =
+                "jdbc:sqlserver://localhost:1433;"
+                        + "database=LSWBoard;"
+                        + "user=LSWB_admin;"
+                        + "password=admin6521;"
+        				+ "encrypt=true;trustServerCertificate=true;";
+ 
+        try (Connection connection = DriverManager.getConnection(connectionUrl);) {
+        	Statement stmt = connection.createStatement();
+        	ResultSet rs = stmt.executeQuery("SELECT name, size FROM LSW_files where postNum="+num);
+	        String result = "";
+	        while(rs.next()) {
+	        	result += rs.getString(1)+","+rs.getString(2)+"/";
+	        }
+
+	        return result;
+	        
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
+    
 }

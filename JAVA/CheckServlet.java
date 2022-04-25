@@ -14,44 +14,20 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class CheckServlet
- */
 @WebServlet("/CheckServlet")
+@MultipartConfig(fileSizeThreshold = 1024,maxFileSize = -1,maxRequestSize = -1)
 public class CheckServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     public CheckServlet() {
         super();
         // TODO Auto-generated constructor stub
-    }
-    
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	response.setContentType("text/html");
-		response.setCharacterEncoding("UTF-8");
-    	File list = new File("D:\\LSWUpload\\Uploaded\\#LSW_POSTED_NUMBER.txt");
-    	BufferedReader reader = new BufferedReader(new FileReader(list));
-		String str = "";
-		ArrayList<String> al = new ArrayList<String>();
-		while (( str = reader.readLine()) != null) {
-			al.add(str);
-		}
-		reader.close();
-		
-		for(int i=0;i<al.size();i++) {
-			if(i==al.size()-1) {
-				response.getWriter().write((String)al.get(i));
-			}
-			else {
-				response.getWriter().write((String)al.get(i)+"\n");
-			}
-		}
-		
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,7 +38,7 @@ public class CheckServlet extends HttpServlet {
 		LocalDateTime now = LocalDateTime.now();
 		String formdatenow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
 		
-		String path = "D:\\LSWUpload\\"+ip;
+		String path = request.getParameter("path")+ip;
 		File folder = new File(path);
 		String log = "\n";
 		

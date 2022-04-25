@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 @WebServlet("/UploadServlet")
+@MultipartConfig(fileSizeThreshold = 1024,maxFileSize = -1,maxRequestSize = -1)
 public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	/**
-     * @see HttpServlet#HttpServlet()
-     */
     public UploadServlet() {
         super();
         // TODO Auto-generated constructor stub
@@ -37,8 +36,7 @@ public class UploadServlet extends HttpServlet {
 	    LocalDateTime now = LocalDateTime.now();
 		String formdatenow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
 		
-		String path = "D:\\LSWUpload\\"+ip;
-		String realPath = "D:\\LSWUpload\\Uploaded";
+		String path = request.getParameter("path")+ip;
 		File folder = new File(path);
 		String log = "\n";
 		
@@ -109,48 +107,6 @@ public class UploadServlet extends HttpServlet {
 						if(part.getSize()!=0) {
 							part.write(path+"\\["+postNum+"] "+fileName);
 						}
-					}
-					
-					checkFile = new File(path+"\\["+postNum+"] "+fileName);
-					
-					if(checkFile.length() == fileSize) {
-						/*
-						Path oldfile = Paths.get(path+"\\["+postNum+"] "+fileName);
-						Path newfile = Paths.get(realPath+"\\["+postNum+"] "+fileName);
-						File nf = new File(realPath+"\\["+postNum+"] "+fileName);
-						int i = 1;
-						String newName = "";
-						while(nf.exists()) {
-							int li = fileName.lastIndexOf(".");
-							newName = fileName.substring(0, li)+"("+i+")"+fileName.substring(li, fileName.length());
-							newfile = Paths.get(realPath+"\\["+postNum+"] "+newName);
-							nf = new File(realPath+"\\["+postNum+"] "+newName);
-							i++;
-						}
-						if(newName!="") {log+="└><중복된 파일명 변경> "+newName+"\n";}
-						Files.move(oldfile, newfile, StandardCopyOption.ATOMIC_MOVE);
-						checkFile.delete();*/
-						//log+="=================================";
-						/*
-						File postList = new File(realPath+"\\#LSW_POSTED_NUMBER.txt");
-						BufferedWriter writer = new BufferedWriter(new FileWriter(postList,true));
-						BufferedReader reader = new BufferedReader(new FileReader(postList));
-						boolean exist = false;
-						String str;
-						while (( str = reader.readLine()) != null) {
-							if(str.equals(postNum)) {
-								exist = true;
-								break;
-							}
-						}
-						if(!exist || str == null) {
-							writer.write(postNum+"\n");
-						}
-						
-						
-						reader.close();
-						writer.close();*/
-						//System.out.println(log);
 					}
 				}
 			}

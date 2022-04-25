@@ -50,9 +50,7 @@ public class LSW_LOGIN extends HttpServlet {
 				Statement stmt = connection.createStatement();
 	        	ResultSet rs = stmt.executeQuery("select PwdCompare('"+pw+"', (select password from LSW_user where id='"+id+"')) from LSW_user");
 	        	int DBPW = 0;
-		        while(rs.next()) {
-		        	DBPW = rs.getInt(1);
-		        }
+		        while(rs.next()) {DBPW = rs.getInt(1);}
 		        if(DBPW==1) {
 		        	HttpSession session = request.getSession();
 		        	session.setAttribute("id", id);
@@ -60,6 +58,13 @@ public class LSW_LOGIN extends HttpServlet {
 		        else {
 		        	response.getWriter().write("Login is Failed");
 		        }
+			}
+			else if(option.equals("admin")) {
+				Statement stmt = connection.createStatement();
+	        	ResultSet rs = stmt.executeQuery("select PwdCompare('"+pw+"', (select password from LSW_admin where id='"+id+"')) from LSW_admin");
+	        	int DBPW = 0;
+		        while(rs.next()) {DBPW = rs.getInt(1);}
+		        if(DBPW==1) {response.getWriter().write("admin");}
 			}
 			else {
 				HttpSession session = request.getSession();

@@ -2,6 +2,7 @@
     <link href="LSWB.css" rel="stylesheet" />
     <script src="LSWUp&Down.JS"></script>
     <script src="LSWEditor_ExecCommand.JS"></script>
+    <script src="LSW_B.js"></script>
 </head>
 <body>
     <nav class="topbar" id="topbar">
@@ -17,18 +18,5 @@
     	
     </nav>
 </body>
-<script>
-	function logout(){
-		var formData = new FormData();
-		formData.append('option','logout');
-		var req = new XMLHttpRequest();
-		req.open('POST','/LSWBoard/LSW_LOGIN');
-        req.send(formData);
-        req.onreadystatechange = function () {
-            if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-            	location.reload();
-            }
-        }
-	}
-</script>
+
 </html>

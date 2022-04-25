@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LSW_DELETE
@@ -32,6 +33,7 @@ public class LSW_DELETE extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		String postNum = request.getParameter("postNum");
+		String userid = request.getParameter("id");
 		//System.out.println(postNum);
 		
 		try {
@@ -39,23 +41,25 @@ public class LSW_DELETE extends HttpServlet {
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}  
-        String connectionUrl =
-                "jdbc:sqlserver://localhost:1433;"
-                        + "database=LSWBoard;"
-                        + "user=LSWB_admin;"
-                        + "password=admin6521;"
-        				+ "encrypt=true;trustServerCertificate=true;";
- 
-        try (Connection connection = DriverManager.getConnection(connectionUrl);) {
-        	Statement stmt = connection.createStatement();
-            int rs = stmt.executeUpdate("UPDATE LSW_post SET isDeleted=1 where number="+postNum);
-            String content = new String("");
-            
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+		}
+		HttpSession session = request.getSession();
+		if(userid.equals((String)session.getAttribute("id"))){
+	        String connectionUrl =
+	                "jdbc:sqlserver://localhost:1433;"
+	                        + "database=LSWBoard;"
+	                        + "user=LSWB_admin;"
+	                        + "password=admin6521;"
+	        				+ "encrypt=true;trustServerCertificate=true;";
+	 
+	        try (Connection connection = DriverManager.getConnection(connectionUrl);) {
+	        	Statement stmt = connection.createStatement();
+	            stmt.executeUpdate("UPDATE LSW_post SET isDeleted=1 where number="+postNum);
+	            
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		}
 	}
 
 }
