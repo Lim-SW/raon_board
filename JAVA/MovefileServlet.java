@@ -37,8 +37,14 @@ public class MovefileServlet extends HttpServlet {
 	    LocalDateTime now = LocalDateTime.now();
 		String formdatenow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
 		
+		File rpf = new File(request.getParameter("path"));
+		if(!rpf.exists()) {rpf.mkdir();}
 		String path = request.getParameter("path")+ip;
+		rpf = new File(path);
+		if(!rpf.exists()) {rpf.mkdir();}
 		String realPath = request.getParameter("path")+request.getParameter("folder");
+		rpf = new File(realPath);
+		if(!rpf.exists()) {rpf.mkdir();}
 		
 		int index = Integer.parseInt(request.getParameter("index"));
 		String postNum = request.getParameter("postNum");

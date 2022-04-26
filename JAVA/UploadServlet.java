@@ -37,19 +37,14 @@ public class UploadServlet extends HttpServlet {
 		String formdatenow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
 		
 		if(request.getParameter("path")==null) {return;}
+		
+		File folder = new File(request.getParameter("path"));
+		if (!folder.exists()) {folder.mkdir();}
 		String path = request.getParameter("path")+ip;
-		File folder = new File(path);
+		folder = new File(path);
 		String log = "\n";
 		
-		if (!folder.exists()) {
-			try{
-			    folder.mkdir();
-		        } 
-		        catch(Exception e){
-			    e.getStackTrace();
-			}     
-		}
-
+		if (!folder.exists()) {folder.mkdir();}
 		
 		// 이어올리기는 전에 체크 해야된다.
 	    try {			    

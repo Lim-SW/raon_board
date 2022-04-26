@@ -1,8 +1,38 @@
 <head>
     <link href="LSWB.css" rel="stylesheet" />
-    <script src="LSWUp&Down.JS"></script>
-    <script src="LSWEditor_ExecCommand.JS"></script>
     <script src="LSW_B.js"></script>
+    
+    <%@ page import="java.sql.Connection" %>
+    <%@ page import="java.sql.DriverManager" %>
+    <%@ page import="java.sql.ResultSet" %>
+    <%@ page import="java.sql.Statement" %>
+    <%
+    	int option=-1; 
+    	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+    	String connectionUrl =
+            "jdbc:sqlserver://localhost:1433;"
+                    + "database=LSWBoard;"
+                    + "user=LSWB_admin;"
+                    + "password=admin6521;"
+    				+ "encrypt=true;trustServerCertificate=true;";
+    	try (Connection connection = DriverManager.getConnection(connectionUrl);) {
+    		Statement stmt = connection.createStatement();
+    		ResultSet rs = stmt.executeQuery("SELECT defOption from LSW_admin");
+        	while(rs.next()) {
+        		option = rs.getInt(1);
+        	}
+    	}
+    	if(option==0){ %>
+    		<script src="LSWUp&Down.JS"></script>
+    		<script src="LSWEditor_ExecCommand.JS"></script>
+    	<%
+    	}
+    	else if(option==1){
+    		//다른 에디터,업로더 import
+    	}
+    	else{System.out.println("옵션오류");}
+    %>
+
 </head>
 <body>
     <nav class="topbar" id="topbar">
