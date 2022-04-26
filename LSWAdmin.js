@@ -1,4 +1,20 @@
+function login(){
+    var id = document.getElementById("admin_id");
+    var pw = document.getElementById("admin_pw");
+    var	container = document.getElementById("container");
+    var	container2 = document.getElementById("container2");
+    
+    LSW_loginAdmin(id,pw,container,container2);
+}
+
 function LSW_loginAdmin(id,pw,container,container2){
+    window.onbeforeunload = function(){
+        var formData = new FormData();
+        formData.append('option','off');
+        var req = new XMLHttpRequest();
+        req.open('POST','/LSWBoard/LSW_LOGIN');
+        req.send(formData);
+    }
     if(id.value==''||pw.value==''){alert('EMPTY ID || EMPTY PASSWORD');}
     else{
         var formData = new FormData();
@@ -29,24 +45,23 @@ function LSW_loginAdmin(id,pw,container,container2){
         req.onreadystatechange = function () {
             if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
                 var raw = req.responseText.split(',');
-                var editor = raw[1].split('/');
-                var uploader = raw[2].split('/');
-                var path = raw[3];
+                var option = raw[0].split('/');
+                var path = raw[1];
                 var now1 = document.createElement('h1');
-                now1.innerText = "현재 적용된 에디터: "+editor[1];
+                now1.innerText = "현재 적용된 에디터: "+option[0];
                 var now2 = document.createElement('h1');
-                now2.innerText = "현재 적용된 업로더: "+uploader[1];
+                now2.innerText = "현재 적용된 업로더: "+option[1];
                 var now3 = document.createElement('h1');
                 now3.innerText = "현재 적용된 업로드 경로: "+path;
                 container2.appendChild(now1);
                 container2.appendChild(now2);
                 container2.appendChild(now3);
-                load2(editor,uploader);
+                load2(raw[0]);
             }
         }
     }
     
-    function load2(editor,uploader){
+    function load2(option){
         var req = new XMLHttpRequest();
         req.open('POST','/LSWBoard/LSW_ADMIN');
         var formData = new FormData();
@@ -54,43 +69,61 @@ function LSW_loginAdmin(id,pw,container,container2){
         req.send(formData);
         req.onreadystatechange = function () {
             if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-                // 여기서 셀렉트박스랑 만들어 줘야함
-                //console.log(req.responseText);
-                var editorList = {'key':'editor','selected':editor[1]};
-                var uploaderList = {'key':'uploader','selected':uploader[1]};
-                var first = req.responseText.split('\n');
+                var List = {'key':'editor','selected':option};
 
                 var div = document.createElement('div');
                 div.className = "selectcontainer";
                 document.body.appendChild(div);
                 
-                var editorLabel = document.createElement('h2');
-                editorLabel.innerText = '에디터변경 ';
-                var splitE = first[0].split(',');
-                var editorB = [];
-                for(var i=0;i<splitE.length-1;i++){
-                    editorB.push(splitE[i].split('/')[1]);
+                var Label = document.createElement('h2');
+                Label.innerText = '옵션변경 ';
+                
+                var optionB = [];
+                for(var i=0;i<req.responseText.split(',').length-1;i++){
+                    optionB.push(i+":"+req.responseText.split(',')[i]);
                 }
-                editorList.name = editorB;
-                div.appendChild(editorLabel);
-                CreateSelect(editorList,div);
-
-                var uploaderLabel = document.createElement('h2');
-                uploaderLabel.innerText = '업로더변경 ';
-                var splitU = first[1].split(',');
-                var uploaderB = [];
-                for(var i=0;i<splitU.length-1;i++){
-                    uploaderB.push(splitU[i].split('/')[1]);
-                }
-                uploaderList.name = uploaderB;
-                div.appendChild(uploaderLabel);
-                CreateSelect(uploaderList,div);
+                List.name = optionB;
+                div.appendChild(Label);
+                var select1 = CreateSelect(List,div);
 
                 var apply = document.createElement('button');
                 apply.innerText = '적용';
                 apply.className = 'apply';
                 div.appendChild(apply);
+                apply.onclick = function(){
+                    ChangeOption(select1);
+                }
 
+                load35();
+            }
+        }
+    }
+
+    function load35(){
+        var req = new XMLHttpRequest();
+        req.open('POST','/LSWBoard/LSW_ADMIN');
+        var formData = new FormData();
+        formData.append('option','3.5');
+        req.send(formData);
+        req.onreadystatechange = function () {
+            if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+                var userList = {'key':'deleteduser','name':req.responseText.split('/')};
+                var div = document.createElement('div');
+                div.className = "selectcontainer";
+                document.body.appendChild(div);
+                var userLabel = document.createElement('h2');
+                userLabel.innerText = '삭제된 사용자목록 ';
+                div.appendChild(userLabel);
+                var select = CreateSelect(userList,div);
+
+                var apply = document.createElement('button');
+                apply.innerText = '복원';
+                apply.className = 'apply';
+                apply.onclick = function(){
+                    RecoverUser(select);
+                }
+                div.appendChild(apply);
+                
                 load3();
             }
         }
@@ -111,13 +144,15 @@ function LSW_loginAdmin(id,pw,container,container2){
                 var userLabel = document.createElement('h2');
                 userLabel.innerText = '사용자목록 ';
                 div.appendChild(userLabel);
-                CreateSelect(userList,div);
+                var select = CreateSelect(userList,div);
 
                 var apply = document.createElement('button');
                 apply.innerText = '삭제';
                 apply.className = 'apply';
                 div.appendChild(apply);
-                
+                apply.onclick = function(){
+                    DelUser(select);
+                }
                 load4();
             }
         }
@@ -148,11 +183,14 @@ function LSW_loginAdmin(id,pw,container,container2){
 
                 deletedList.name = deleted;
 
-                CreateSelect(deletedList,div);
+                var select = CreateSelect(deletedList,div);
 
                 var apply = document.createElement('button');
                 apply.innerText = '복원';
                 apply.className = 'apply';
+                apply.onclick = function(){
+                    RecoverPost(select);
+                }
                 div.appendChild(apply);
                 
                 load5();
@@ -185,11 +223,14 @@ function LSW_loginAdmin(id,pw,container,container2){
 
                 postList.name = post;
 
-                CreateSelect(postList,div);
+                var select = CreateSelect(postList,div);
 
                 var apply = document.createElement('button');
                 apply.innerText = '삭제';
                 apply.className = 'apply';
+                apply.onclick = function(){
+                    DelPost(select);
+                }
                 div.appendChild(apply);
                 
                 load6();
@@ -214,6 +255,7 @@ function LSW_loginAdmin(id,pw,container,container2){
 
                 var text = document.createElement('input');
                 text.type = "text";
+                text.id = "path";
                 text.className = "path";
                 text.value = req.responseText;
                 div.appendChild(text);
@@ -221,6 +263,9 @@ function LSW_loginAdmin(id,pw,container,container2){
                 var apply = document.createElement('button');
                 apply.innerText = '변경';
                 apply.className = 'apply';
+                apply.onclick = function(){
+                    ChangeDir(text.value);
+                }
                 div.appendChild(apply);
             }
         }
@@ -238,9 +283,164 @@ function LSW_loginAdmin(id,pw,container,container2){
                 temp.value = i;
                 temp.innerText = list.name[i];
                 temp.id = key+list[i];
-                if(temp.innerText==list.selected){temp.selected = true;}
+                if(temp.innerText.indexOf(list.selected)!=-1){temp.selected = true;}
                 select.appendChild(temp);
             }
+        }
+
+        return select;
+    }
+}
+
+function ChangeOption(select){
+    var selected = '';
+    for(var i=0;i<select.childNodes.length;i++){
+        if(select.childNodes[i].selected){
+            selected = select.childNodes[i].innerText.split(':');
+            break;
+        }
+    }
+    var formData = new FormData();
+    formData.append('option','CO');
+    formData.append('selected',selected[0]);
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            alert(req.responseText);
+            if(req.responseText=="완료"){
+                var temp = document.getElementById('container2');
+                temp.childNodes[1].innerText = "현재 적용된 에디터: "+selected[1].split('/')[0];
+                temp.childNodes[2].innerText = "현재 적용된 업로더: "+selected[1].split('/')[1];
+            }
+        }
+    }
+}
+
+function RecoverUser(select){
+    var id = '';
+    var rc;
+    for(var i=0;i<select.childNodes.length;i++){
+        if(select.childNodes[i].selected){
+            rc = select.childNodes[i];
+            id = select.childNodes[i].innerText;
+            break;
+        }
+    }
+    var formData = new FormData();
+    formData.append('option','RU');
+    formData.append('id',id);
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            alert(req.responseText);
+            if(req.responseText=="완료"){
+                var temp = document.getElementById('select user');
+                select.removeChild(rc);
+                temp.appendChild(rc);
+            }
+        }
+    }
+}
+
+function DelUser(select){
+    var id = '';
+    var rc;
+    for(var i=0;i<select.childNodes.length;i++){
+        if(select.childNodes[i].selected){
+            rc = select.childNodes[i];
+            id = select.childNodes[i].innerText;
+            break;
+        }
+    }
+    var formData = new FormData();
+    formData.append('option','DU');
+    formData.append('id',id);
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            alert(req.responseText);
+            if(req.responseText=="완료"){
+                var temp = document.getElementById('select deleteduser');
+                select.removeChild(rc);
+                temp.appendChild(rc);
+            }
+        }
+    }
+}
+
+function RecoverPost(select){
+    var postNum = 0;
+    var rc;
+    for(var i=0;i<select.childNodes.length;i++){
+        if(select.childNodes[i].selected){
+            rc = select.childNodes[i];
+            postNum = select.childNodes[i].innerText.split(':')[0];
+            break;
+        }
+    }
+    var formData = new FormData();
+    formData.append('option','RP');
+    formData.append('postNum',postNum);
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            alert(req.responseText);
+            if(req.responseText=="완료"){
+                var temp = document.getElementById('select post');
+                select.removeChild(rc);
+                temp.appendChild(rc);
+            }
+        }
+    }
+}
+
+function DelPost(select){
+    var postNum = 0;
+    var rc;
+    for(var i=0;i<select.childNodes.length;i++){
+        if(select.childNodes[i].selected){
+            rc = select.childNodes[i];
+            postNum = select.childNodes[i].innerText.split(':')[0];
+            break;
+        }
+    }
+    var formData = new FormData();
+    formData.append('option','DP');
+    formData.append('postNum',postNum);
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            alert(req.responseText);
+            if(req.responseText=="완료"){
+                var temp = document.getElementById('select deleted');
+                select.removeChild(rc);
+                temp.appendChild(rc);
+            }
+        }
+    }
+}
+
+function ChangeDir(dir){
+    var formData = new FormData();
+    formData.append('option','CD');
+    formData.append('path',dir);
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            alert(req.responseText);
+            document.getElementById('container2').childNodes[3].innerText = '현재 적용된 업로드 경로: '+dir;
         }
     }
 }

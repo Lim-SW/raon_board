@@ -30,14 +30,4 @@
 	</div>
 </body>
 
-<script>
-	function login(){
-		var id = document.getElementById("admin_id");
-		var pw = document.getElementById("admin_pw");
-		var	container = document.getElementById("container");
-		var	container2 = document.getElementById("container2");
-		
-		LSW_loginAdmin(id,pw,container,container2);
-	}
-</script>
 </html>

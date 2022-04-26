@@ -18,6 +18,7 @@
     			<input id="title" class = 'titleInput' type="text" maxlength='30' placeholder="제목을 입력해주세요. (최대 30글자)"></input>
     		</div>
 		</div>
+		<button id="back" class="writebutton" type="button">취소</button>
 		<button id="send" class="writebutton" type="button">작성 완료</button>
 	</div>
 	<%}

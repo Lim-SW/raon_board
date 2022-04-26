@@ -36,6 +36,7 @@ public class UploadServlet extends HttpServlet {
 	    LocalDateTime now = LocalDateTime.now();
 		String formdatenow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
 		
+		if(request.getParameter("path")==null) {return;}
 		String path = request.getParameter("path")+ip;
 		File folder = new File(path);
 		String log = "\n";

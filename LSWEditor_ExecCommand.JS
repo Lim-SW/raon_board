@@ -1,8 +1,8 @@
-function LSWEditorPrototype(id, width, height, divName){
-    this.option.id = id;
-    this.option.width = width;
-    this.option.height = height;
-    this.option.divName = divName;
+function LSWEditorPrototype(obj){
+    this.option.id = obj.id;
+    this.option.width = obj.width;
+    this.option.height = obj.height;
+    this.option.divName = obj.divName;
 
     //this.loadFunc.LoadLSWEditor();
 }
@@ -479,7 +479,11 @@ LSWEditorPrototype.prototype.APIList = {
     setContentOnEditor:function (id, htmlValue){
         var editPlace = LSWEditorPrototype.prototype.APIList.getLSWEditPlaceById(id);
         editPlace.contentDocument.body.innerHTML = htmlValue;
-    }
+    },
+
+    getIsIE:function (){ // IE 인지 bool 리턴
+        return (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1);
+    },
 }
 
 LSWEditorPrototype.prototype.eventList = {

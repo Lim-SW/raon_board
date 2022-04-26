@@ -1,13 +1,13 @@
-function LSWUpDownPrototype(divId,id,width,height,option,bp) { // 프로토타입 객체
-    if(width!=undefined){this.option.width = width;}
+function LSWUpDownPrototype(obj) { // 프로토타입 객체
+    if(obj.width!=undefined){this.option.width = obj.width;}
     else{this.option.width = 400;}
-    if(height!=undefined){this.option.height = height;}
+    if(obj.height!=undefined){this.option.height = obj.height;}
     else{this.option.height = 300;}
-    if(id!=undefined){this.option.id = id;}
-    if(divId!=undefined){this.option.divId = divId;}
-    if(option!=undefined){this.option.option = option;}
+    if(obj.id!=undefined){this.option.id = obj.id;}
+    if(obj.divId!=undefined){this.option.divId = obj.divId;}
+    if(obj.option!=undefined){this.option.option = obj.option;}
     else{this.option.option = 'both';}
-    if(bp!=undefined){this.option.bp = bp;}
+    if(obj.bp!=undefined){this.option.bp = obj.bp;}
     else{this.option.bp = 0;}
 
     var agent = navigator.userAgent.toLowerCase();
@@ -75,14 +75,14 @@ function LSWUpDownPrototype(divId,id,width,height,option,bp) { // 프로토타�
         else{var map = new Map();}
         LSWUpDownPrototype.prototype.option.wl = map;
     }
-    LSWUpDownPrototype.prototype.option.wl.set(id,[]);
+    LSWUpDownPrototype.prototype.option.wl.set(obj.id,[]);
 
     if (LSWUpDownPrototype.prototype.option.result==null){
         if(this.option.isIE){var map = new CustomMap();}
         else{var map = new Map();}
         LSWUpDownPrototype.prototype.option.result = map;
     }
-    LSWUpDownPrototype.prototype.option.result.set(id,[]);
+    LSWUpDownPrototype.prototype.option.result.set(obj.id,[]);
 
     //this.loadFunc.LoadLSWUpDown();
 }
