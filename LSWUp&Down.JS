@@ -371,8 +371,9 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
     },
 
     OnStartUpload_LSW : function (randNum, result) { // 업로드 시작시
-        console.log(randNum);
-        console.log(result);
+        console.log("Default Message : 업로드가 시작되었습니다.");
+        console.log("RandNum:"+randNum); // 임시 게시물 번호
+        console.log(result); // result[] = 업로드가 될 파일리스트
     },
 
     OnDownLoadDone_LSW : function (result) { // 다운로드 완료시
@@ -381,7 +382,9 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
     },
 
     OnStartDownload_LSW : function (randNum) { // 다운로드 시작시
-        console.log(randNum);
+        console.log("Default Message : 다운로드가 시작되었습니다.");
+        console.log("RandNum:"+randNum); // 임시 게시물 번호
+        console.log(result); // result[] = 다운로드가 될 파일리스트
     },
 
     OnError_LSW : function (result) { // 오류 발생시
@@ -394,11 +397,11 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
         console.log(result); // result[] = 삭제가 완료된 파일 목록
     },
     
-    OnDownIframeLoaded_LSW : function (Iframe) { // 온로드
+    OnDownIframeLoaded_LSW : function (Iframe) { // 다운로드 영역 Iframe 온로드
         LSWUpDownPrototype.prototype.option.loaded(Iframe); // Iframe = 생성된 창의 Iframe객체
     },
 
-    OnUpIframeLoaded_LSW : function (Iframe) { // 온로드
+    OnUpIframeLoaded_LSW : function (Iframe) { // 업로드 영역 Iframe 온로드
         LSWUpDownPrototype.prototype.option.loaded(Iframe); // Iframe = 생성된 창의 Iframe객체
     },
 
@@ -409,7 +412,7 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
 
     OnMoveFileDone_LSW : function (result,folder) { // 업로드 완료된 후 파일을 메인폴더로 옮겼을 때
         console.log("Default Message : 파일 업로드 체크 후 메인폴더로 이동 완료");
-        console.log(folder);
+        console.log(folder); // 옮겨진 폴더명
         console.log(result); // 옮겨진 파일 목록
     },
 }
@@ -592,7 +595,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         return LSWUpDownPrototype.prototype.option.isIE;
     },
 
-    LswGetUpButtonPlaceAPI:function (id){
+    LswGetUpButtonPlaceAPI:function (id){ // 업로드 영역 Iframe 리턴
         try {
             var IFR = document.getElementById('UploadButtonPlace_'+id);
             if(IFR==undefined){
@@ -612,7 +615,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
-    LswGetDownButtonPlaceAPI:function (id){
+    LswGetDownButtonPlaceAPI:function (id){ // 다운로드 영역 Iframe 리턴
         try {
             var IFR = document.getElementById('DownloadButtonPlace_'+id);
             if(IFR==undefined){
@@ -632,7 +635,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
-    LswListItemAPI:function (id,filename,filesize){
+    LswListItemAPI:function (id,filename,filesize){ // 다운로드 영역에 파일명, 크기 받아서 하나씩 추가
         try {
             var list = document.getElementById('DownloadDiv_'+id);
             if(list==undefined){
@@ -653,7 +656,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
-    LswFileDeleteAPI:function (id,path,folder,number){
+    LswFileDeleteAPI:function (id,path,folder,number){ // 경로 받아서 업로드된 파일 삭제
         try {
             var list = document.getElementById('DownloadDiv_'+id);
             if(list==undefined){
