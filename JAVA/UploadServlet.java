@@ -1,14 +1,10 @@
 package LSWBoard;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -48,35 +44,20 @@ public class UploadServlet extends HttpServlet {
 		
 		// 이어올리기는 전에 체크 해야된다.
 	    try {			    
-			InputStream yesno = request.getPart("yesno").getInputStream();
-			InputStreamReader yesnoReader = new InputStreamReader(yesno);
-			Stream<String> yesnoString= new BufferedReader(yesnoReader).lines();
-		    String yn = yesnoString.collect(Collectors.joining());
-		    
-			InputStream postNumIs = request.getPart("postNum").getInputStream();
-			InputStreamReader postNumReader = new InputStreamReader(postNumIs);
-			Stream<String> postNumString= new BufferedReader(postNumReader).lines();
-		    String postNum = postNumString.collect(Collectors.joining());
+	    	String yn = request.getParameter("yesno");
+	    	String postNum = request.getParameter("postNum");
 		    
 		    //System.out.println(postNum);
 	
 			//////////////////////// Part&Write ////////////////////////
-			//log+="========="+ip+"=========\n";
-			//log+="==="+formdatenow+"==\n";
-			//log+="postNum : ["+postNum+"]\n";
+			log+="========="+ip+"=========\n";
+			log+="==="+formdatenow+"==\n";
+			log+="postNum : ["+postNum+"]\n";
 			Collection<Part> parts = request.getParts();
 			for (Part part : parts) {
 				if(part.getContentType()!=null) {
 					String fileName = part.getName();
-					
-					InputStream fnis = request.getPart(fileName+" size").getInputStream();
-					InputStreamReader inputStreamReader = new InputStreamReader(fnis);
-					Stream<String> streamOfString= new BufferedReader(inputStreamReader).lines();
-				    long fileSize = Long.parseLong(streamOfString.collect(Collectors.joining()));
-					
-					//System.out.printf("파라미터 명 : %s, contentType :  %s,  size : %d bytes \n", part.getName(),part.getContentType(), part.getSize());
-					//log+="<업로드> "+fileName+"\n";
-	
+					log+="<업로드> "+fileName+"\n";
 					File checkFile = new File(path+"\\["+postNum+"] "+fileName);
 				    if(yn.equals("NO")&&checkFile.exists()) {
 				    	checkFile.delete();
@@ -106,7 +87,8 @@ public class UploadServlet extends HttpServlet {
 					}
 				}
 			}
-			
+			log+="=================================";
+			//System.out.println(log);
 			////////////////////////////////////////////////////////////
 			
 			/*

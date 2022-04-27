@@ -57,7 +57,7 @@ public class MovefileServlet extends HttpServlet {
 		
 		for(int i=0;i<index;i++) {
 			String name = request.getParameter("name"+i);
-			log+="<업로드> "+name+"\n";
+			log+="<파일옮김> "+name+"\n";
 			File checkFile = new File(path+"\\["+randNum+"] "+name);
 			if(checkFile.exists()) {
 				Path oldfile = Paths.get(path+"\\["+randNum+"] "+name);

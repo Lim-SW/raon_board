@@ -697,6 +697,22 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
         fileSize.innerText = LSWUpDownPrototype.prototype.funcList.BytesToSize(fs);
         fileSize.style.float = 'right';
         tempFileDiv.appendChild(fileSize);
+        tempFileDiv.ondrop = function (e) {
+            var id = e.target.parentNode.id.split('_')[1];
+            LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
+        };
+        checkBox.ondrop = function (e) {
+            var id = e.target.parentNode.parentNode.id.split('_')[1];
+            LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
+        };
+        fileSize.ondrop = function (e) {
+            var id = e.target.parentNode.parentNode.id.split('_')[1];
+            LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
+        };
+        span.ondrop = function (e) {
+            var id = e.target.parentNode.parentNode.id.split('_')[1];
+            LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
+        };
 
         where.appendChild(tempFileDiv);
     },
@@ -720,12 +736,15 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
             var calSize = tempF.size;
             var flag = 0;
             for (var u = 0; u < where.childNodes.length; u++) {
-                if (where.childNodes[u].childNodes[1].innerText == tempF.name && where.childNodes[u].childNodes[2].innerText == calSize) {
-                    same += ('>>> ' + tempF.name + '\n');
-                    sameCount += 1;
-                    flag = 1;
-                    break;
+                if(where.childNodes[u].childNodes[1]!=undefined){
+                    if (where.childNodes[u].childNodes[1].innerText == tempF.name) {
+                        same += ('>>> ' + tempF.name + '\n');
+                        sameCount += 1;
+                        flag = 1;
+                        break;
+                    }
                 }
+                else{return;}
             }
             if (flag == 0) {
                 add += ('>>> ' + tempF.name + '\n');

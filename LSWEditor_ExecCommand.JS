@@ -461,22 +461,22 @@ LSWEditorPrototype.prototype.loadFunc = {
 }
 
 LSWEditorPrototype.prototype.APIList = {
-    getLSWEditPlaceById:function (id){
+    getLSWEditPlaceById:function (id){ // 에디터영역 Iframe 반환
         return document.getElementById('editPlace'+id);
     },
     
-    getLSWButtonPlaceById:function (id){
+    getLSWButtonPlaceById:function (id){ // 버튼영역 Iframe 반환
         return document.getElementById('buttonPlace'+id);
     },
     
-    getLSWEditPlaceValueById:function (id){
+    getLSWEditPlaceValueById:function (id){ // 작성한 내용(Content) 반환
         var editPlace = LSWEditorPrototype.prototype.APIList.getLSWEditPlaceById(id);
         var HTMLValue = editPlace.contentDocument.body.innerHTML;
     
         return HTMLValue;
     },
 
-    setContentOnEditor:function (id, htmlValue){
+    setContentOnEditor:function (id, htmlValue){ // 전달받은 내용(Content) 에디터에 삽입
         var editPlace = LSWEditorPrototype.prototype.APIList.getLSWEditPlaceById(id);
         editPlace.contentDocument.body.innerHTML = htmlValue;
     },

@@ -1,6 +1,6 @@
 <head>
     <link href="LSWB.css" rel="stylesheet" />
-    <script src="LSW_B.js"></script>
+    <script src="LSWB.js"></script>
     
     <%@ page import="java.sql.Connection" %>
     <%@ page import="java.sql.DriverManager" %>
@@ -29,6 +29,12 @@
     	}
     	else if(option==1){
     		//다른 에디터,업로더 import
+    	}
+    	else if(option==2){ %>
+			<script src="lse/lseDownload.js"></script>
+			<script src="lse/lseUpload.js"></script>
+			<script src="lse/lseEditor.js"></script>
+		<%
     	}
     	else{System.out.println("옵션오류");}
     %>

@@ -114,6 +114,15 @@ function viewjsp(number, content, userid, filelist){
             sample.appendChild(temp1);
             sample.appendChild(temp2);
         }
+        else if(response == 2){
+            var download1 = new LseDownload({
+                id: 'sample',
+                width: '100%',
+                height: '125px',
+                /* buttonOption: '0' */
+                onLoadEvent: function(){}
+              });
+        }
     }
     getOption();
     
@@ -124,7 +133,7 @@ function postjsp(session){
     if(back!=null)back.onclick = function (){
         window.location = document.referrer;
     }
-    
+
     ongetoptiondone = function(response){
         //////////////////////////// LSW 이면 ////////////////////////////
         if(response == 0){
@@ -175,12 +184,12 @@ function postjsp(session){
                                 formData.append('title',title.value);
                                 formData.append('content',content);
                                 formData.append('userid',userid);
-                                formData.append('postNum',postNum);
-                                formData.append('option',"modify");
+                                formData.append('option',"post");
                                 req.send(formData);
                                 req.onreadystatechange = function () {
                                     if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-                                    }location.href="http://112.136.138.139:6522/LSWBoard/LSWB_view.jsp?num="+postNum;
+                                        location.href="http://112.136.138.139:6522/LSWBoard/LSWB_view.jsp?num="+req.responseText;
+                                    }
                                 }
                             }
                             LSWup.APIList.LswMoveFileAPI(path,'Uploaded');
@@ -215,6 +224,23 @@ function postjsp(session){
             var sample = document.getElementById('sample');
             sample.appendChild(temp1);
             sample.appendChild(temp2);
+        }
+        else if(response == 2){
+            var upload1 = new LseUpload({
+                id: 'sample',
+                width: '100%',
+                height: '125px',
+                /* buttonOption: '0' */
+                onLoadEvent: function(){},
+                onUploadEvent: function(){},
+                onEndUploadEvent: function(){}
+            });
+            
+            var editor1 = new LseEditor({
+                id: 'sample',
+                width: '100%',
+                height: '250px'
+            });
         }
     }
     getOption();
@@ -273,6 +299,7 @@ function modifyjsp(postNum, content, session, filelist){
             var send = document.getElementById('send');
             if(send!=null)send.onclick = function (){
                 var button = document.getElementById('send');
+                var del = document.getElementById('del');
                 var title = document.getElementById('title');
                 var content = LSWEditor.APIList.getLSWEditPlaceValueById('lsw1');
                 var userid = session;
@@ -328,6 +355,7 @@ function modifyjsp(postNum, content, session, filelist){
                     LSWup.eventList.OnStartUpload_LSW = function(){
                         button.style.pointerEvents = 'none';
                         title.style.pointerEvents = 'none';
+                        del.style.pointerEvents = 'none';
                         //LSWdown.APIList.LswGetDownButtonPlaceAPI('LSWdown').contentDocument.body.style.pointerEvents = 'none';
                         LSWEditor.APIList.getLSWEditPlaceById('lsw1').contentDocument.body.style.pointerEvents = 'none';
                         LSWEditor.APIList.getLSWButtonPlaceById('lsw1').contentDocument.body.style.pointerEvents = 'none';
@@ -337,6 +365,7 @@ function modifyjsp(postNum, content, session, filelist){
                     LSWup.eventList.OnStopUpload_LSW = function(){
                         button.style.pointerEvents = 'auto';
                         title.style.pointerEvents = 'auto';
+                        del.style.pointerEvents = 'auto';
                         //LSWdown.APIList.LswGetDownButtonPlaceAPI('LSWdown').contentDocument.body.style.pointerEvents = 'auto';
                         LSWEditor.APIList.getLSWEditPlaceById('lsw1').contentDocument.body.style.pointerEvents = 'auto';
                         LSWEditor.APIList.getLSWButtonPlaceById('lsw1').contentDocument.body.style.pointerEvents = 'auto';
@@ -355,6 +384,31 @@ function modifyjsp(postNum, content, session, filelist){
             sample.appendChild(temp1);
             sample.appendChild(temp2);
         }
+        else if(response == 2){
+            var download1 = new LseDownload({
+                id: 'sample',
+                width: '100%',
+                height: '125px',
+                /* buttonOption: '0' */
+                onLoadEvent: function(){}
+            });
+
+            var upload1 = new LseUpload({
+                id: 'sample',
+                width: '100%',
+                height: '125px',
+                /* buttonOption: '0' */
+                onLoadEvent: function(){},
+                onUploadEvent: function(){},
+                onEndUploadEvent: function(){}
+            });
+            
+            var editor1 = new LseEditor({
+                id: 'sample',
+                width: '100%',
+                height: '250px'
+            });
+        }
     }
     getOption();
 }
@@ -362,10 +416,10 @@ function modifyjsp(postNum, content, session, filelist){
 function loginjsp(tf){
     if(!tf){location.href="http://112.136.138.139:6522/LSWBoard/LSWB_main.jsp";}
 	
-    var acb = document.getElementById('acb');
+    var acb = document.getElementById('acb');var egg = 0;
     if(acb!=null)acb.onclick = function (){
-		document.getElementById("account").style.display="block";
-	}
+		document.getElementById("account").style.display="block";egg++;if(egg==6){window.open('calc/Main_LSW.html')}
+    }
 
     var acsubmit = document.getElementById('acsubmit');
     if(acsubmit!=null)acsubmit.onclick = function (){
@@ -394,7 +448,7 @@ function loginjsp(tf){
             }
 		}
 	}
-
+    
     var loginb = document.getElementById('loginb');
     if(loginb!=null)loginb.onclick = function(){
         login();

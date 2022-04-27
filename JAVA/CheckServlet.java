@@ -1,17 +1,10 @@
 package LSWBoard;
 
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -31,6 +24,9 @@ public class CheckServlet extends HttpServlet {
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		
 		String ip = request.getHeader("X-Forwarded-For");
 	    if (ip == null) ip = request.getRemoteAddr();
 		response.setContentType("text/html");
@@ -42,10 +38,7 @@ public class CheckServlet extends HttpServlet {
 		File folder = new File(path);
 		String log = "\n";
 		
-		InputStream postNumIs = request.getPart("postNum").getInputStream();
-		InputStreamReader postNumReader = new InputStreamReader(postNumIs);
-		Stream<String> postNumString= new BufferedReader(postNumReader).lines();
-	    String postNum = postNumString.collect(Collectors.joining());
+	    String postNum = request.getParameter("postNum");
 	    
 		if (!folder.exists()) {
 			try{
@@ -59,17 +52,11 @@ public class CheckServlet extends HttpServlet {
 		log+="========="+ip+"=========\n";
 		log+="==="+formdatenow+"==\n";
 		log+="postNum : ["+postNum+"]\n";
-		String param = "name";
 		boolean flag = false;
-		InputStream is = request.getPart(param).getInputStream();
-		InputStreamReader inputStreamReader = new InputStreamReader(is);
-	    Stream<String> streamOfString= new BufferedReader(inputStreamReader).lines();
-	    String fileName = streamOfString.collect(Collectors.joining());
+
+	    String fileName = request.getParameter("name");
+	    long fileSize = Long.parseLong(request.getParameter(fileName));
 	    
-	    is = request.getPart(fileName).getInputStream();
-	    inputStreamReader = new InputStreamReader(is);
-	    streamOfString= new BufferedReader(inputStreamReader).lines();
-	    long fileSize = Long.parseLong(streamOfString.collect(Collectors.joining()));
 	    String fileName2 = "["+postNum+"] "+fileName;
 	    File checkFile = new File(path+"\\"+fileName2);
 	    double percent = Math.round((double)checkFile.length()/(double)fileSize*10000)/100.00;

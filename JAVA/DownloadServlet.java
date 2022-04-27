@@ -53,16 +53,13 @@ public class DownloadServlet extends HttpServlet {
 		
 		String path = request.getParameter("path")+request.getParameter("folder")+"\\";
 		String val = "";
-		int size = (1024 * 1024 * 2000) + 1;
 		LocalDateTime now = LocalDateTime.now();
 		String formdatenow = now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
 		String ip = request.getHeader("X-Forwarded-For");
 	    if (ip == null) ip = request.getRemoteAddr();
 	    
 	    String log = "\n";
-		
-		//MultipartRequest multi = new MultipartRequest(request, path, size, "UTF-8");
-		
+			
 		Enumeration<?> fileNames = request.getParameterNames();
 		
     	File file = null;
