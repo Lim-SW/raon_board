@@ -13,7 +13,7 @@ function getOption(){
 
 function ongetoptiondone(response){}
 
-function getPath(){
+function getPath_A(){
     var req = new XMLHttpRequest();
     req.open('POST','/LSWBoard/LSW_ADMIN');
     var formData = new FormData();
@@ -21,7 +21,43 @@ function getPath(){
     req.send(formData);
     req.onreadystatechange = function () {
         if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-            ongetpathdone(req.responseText);
+            var temp = req.responseText;
+            var folder = temp.split("\\");
+            if(folder.length>2){folder.pop();folder = folder[folder.length-1];}
+            else{folder=''};
+            if(folder==''){
+                var path = temp.split('\\')[0]+"\\";
+            }
+            else{
+                var path = temp.split(folder);
+                path = path[0];
+            }
+            ongetpathdone([path,folder]);
+        }
+    }
+}
+
+function getPath_P(number){
+    var req = new XMLHttpRequest();
+    req.open('POST','/LSWBoard/LSW_ADMIN');
+    var formData = new FormData();
+    formData.append('option','path');
+    formData.append('postNum',number);
+    req.send(formData);
+    req.onreadystatechange = function () {
+        if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
+            var temp = req.responseText;
+            var folder = temp.split("\\");
+            if(folder.length>2){folder.pop();folder = folder[folder.length-1];}
+            else{folder=''};
+            if(folder==''){
+                var path = temp.split('\\')[0]+"\\";
+            }
+            else{
+                var path = temp.split(folder);
+                path = path[0];
+            }
+            ongetpathdone([path,folder]);
         }
     }
 }
@@ -93,7 +129,7 @@ function viewjsp(number, content, userid, filelist){
             
             if(dnButton!=null)dnButton.onclick = function(){
                 ongetpathdone = function(path){
-                    LSWdown.APIList.LswFileDownAPI('LSWdown',path,'Uploaded',number);
+                    LSWdown.APIList.LswFileDownAPI('LSWdown',path[0],path[1],number);
                     LSWdown.eventList.OnStartDownload_LSW = function(){
                         dnButton.disabled = true;
                     }
@@ -101,7 +137,7 @@ function viewjsp(number, content, userid, filelist){
                         dnButton.disabled = false;
                     }
                 }
-                getPath();
+                getPath_P(number);
             }
         }
         //////////////////////////// 다른 업로더, 에디터 추가 ////////////////////////////
@@ -168,13 +204,13 @@ function postjsp(session){
                                 req.onreadystatechange = function () {
                                     if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
                                         LSWup.eventList.OnMoveFileDone_LSW = function (result, folder){
-                                            insert(result,req.responseText,path+folder);
+                                            insert(result,req.responseText,path[0]+folder);
                                         }
-                                        LSWup.APIList.LswMoveFileAPI(path,'Uploaded',randNum,req.responseText,result);
+                                        LSWup.APIList.LswMoveFileAPI(path[0],path[1],randNum,req.responseText,result);
                                     }
                                 }                    
                             }
-                            LSWup.APIList.LswFileUpAPI('LSWup',path);
+                            LSWup.APIList.LswFileUpAPI('LSWup',path[0]);
                         }
                         else{
                             LSWup.eventList.OnMoveFileDone_LSW = function (){
@@ -192,10 +228,10 @@ function postjsp(session){
                                     }
                                 }
                             }
-                            LSWup.APIList.LswMoveFileAPI(path,'Uploaded');
+                            LSWup.APIList.LswMoveFileAPI(path[0],path[1]);
                         }
                     }
-                    getPath();
+                    getPath_A();
                     
                     LSWup.eventList.OnStartUpload_LSW = function(){
                         button.style.pointerEvents = 'none';
@@ -291,9 +327,9 @@ function modifyjsp(postNum, content, session, filelist){
             var del = document.getElementById('del');
             if(del!=null)del.onclick = function (){
                 ongetpathdone = function(path){
-                LSWdown.APIList.LswFileDeleteAPI('LSWdown',path,'Uploaded',postNum);
+                LSWdown.APIList.LswFileDeleteAPI('LSWdown',path[0],path[1],postNum);
                 }
-                getPath();
+                getPath_P(postNum);
             }
             
             var send = document.getElementById('send');
@@ -322,13 +358,13 @@ function modifyjsp(postNum, content, session, filelist){
                                 req.onreadystatechange = function () {
                                     if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
                                         LSWup.eventList.OnMoveFileDone_LSW = function (result, folder){
-                                            insert(result,postNum,path+folder);
+                                            insert(result,postNum,path[0]+folder);
                                         }
-                                        LSWup.APIList.LswMoveFileAPI(path,'Uploaded',randNum,postNum,result);
+                                        LSWup.APIList.LswMoveFileAPI(path[0],path[1],randNum,postNum,result);
                                     }  
                                 }
                             }
-                            LSWup.APIList.LswFileUpAPI('LSWup',path);
+                            LSWup.APIList.LswFileUpAPI('LSWup',path[0]);
                         }
                         
                         else{
@@ -347,10 +383,11 @@ function modifyjsp(postNum, content, session, filelist){
                                     }location.href="http://112.136.138.139:6522/LSWBoard/LSWB_view.jsp?num="+postNum;
                                 }
                             }
-                            LSWup.APIList.LswMoveFileAPI(path,'Uploaded');
+                            LSWup.APIList.LswMoveFileAPI(path[0],path[1]);
                         }
                     }
-                    getPath();
+                    
+                    getPath_P(postNum);
 
                     LSWup.eventList.OnStartUpload_LSW = function(){
                         button.style.pointerEvents = 'none';
@@ -423,11 +460,18 @@ function loginjsp(tf){
 
     var acsubmit = document.getElementById('acsubmit');
     if(acsubmit!=null)acsubmit.onclick = function (){
+        var specialCheck = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
 		var id = document.getElementById("ac_login").value;
 		var pw = document.getElementById("ac_pw").value;
 		if(id==''||pw==''){
 			alert('ID나 PASSWORD를 잘못 입력하셨습니다.');
 		}
+        else if(id.search(/\s/) != -1){
+            alert("ID는 빈 칸을 포함 할 수 없습니다.");
+        }
+        else if (specialCheck.test(id)) {
+            alert("ID는 특수문자를 포함 할 수 없습니다.");
+        }
 		else{
 			var formData = new FormData();
 			formData.append('id',id);
@@ -501,6 +545,9 @@ function logout(){
 }
 
 function insert(result,postNum,path){
+    if(path.slice(-1)=="\\"){
+        path = path.substr(0,path.length-1);
+    }
     for(var i=0;i<result.length;i++){
         var formData = new FormData();
         var req = new XMLHttpRequest();

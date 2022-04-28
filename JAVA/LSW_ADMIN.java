@@ -48,7 +48,7 @@ public class LSW_ADMIN extends HttpServlet {
         	int selected = 0;
         	
         	HttpSession session = request.getSession();
-        	if(option.equals("6")||option.equals("7")){
+        	if(option.equals("6")||option.equals("7")||option.equals("path")){
             	if(option.equals("6")) {
             		ResultSet rs = stmt.executeQuery("SELECT path from LSW_admin");
                 	while(rs.next()) {
@@ -60,6 +60,21 @@ public class LSW_ADMIN extends HttpServlet {
                 	while(rs.next()) {
                 		response.getWriter().write(rs.getString(1));
                 	}
+            	}
+            	else if(option.equals("path")) {
+            		ResultSet rs = stmt.executeQuery("select count(*) from LSW_files where postNum = "+request.getParameter("postNum")); 
+            		rs.next();
+            		int count = rs.getInt(1);
+            		if(count>0) {
+            			rs = stmt.executeQuery("SELECT path from LSW_files where postNum="+request.getParameter("postNum"));
+                    	rs.next();
+                    	response.getWriter().write(rs.getString(1));
+            		}
+            		else {
+            			rs = stmt.executeQuery("SELECT path from LSW_admin");
+                    	rs.next();
+                    	response.getWriter().write(rs.getString(1));
+            		}
             	}
         	}
         	else if(session.getAttribute("admin")!=null){

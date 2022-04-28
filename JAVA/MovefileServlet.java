@@ -49,7 +49,6 @@ public class MovefileServlet extends HttpServlet {
 		int index = Integer.parseInt(request.getParameter("index"));
 		String postNum = request.getParameter("postNum");
 		String randNum = request.getParameter("randNum");
-		
 		String log = "\n";
 		log+="========="+ip+"=========\n";
 		log+="==="+formdatenow+"==\n";

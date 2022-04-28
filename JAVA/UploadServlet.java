@@ -39,9 +39,7 @@ public class UploadServlet extends HttpServlet {
 		String path = request.getParameter("path")+ip;
 		folder = new File(path);
 		String log = "\n";
-		
 		if (!folder.exists()) {folder.mkdir();}
-		
 		// 이어올리기는 전에 체크 해야된다.
 	    try {			    
 	    	String yn = request.getParameter("yesno");

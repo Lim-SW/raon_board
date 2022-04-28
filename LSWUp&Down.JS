@@ -381,7 +381,7 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
         console.log(result); // result[] = 다운로드가 완료된 파일 목록
     },
 
-    OnStartDownload_LSW : function (randNum) { // 다운로드 시작시
+    OnStartDownload_LSW : function (randNum,result) { // 다운로드 시작시
         console.log("Default Message : 다운로드가 시작되었습니다.");
         console.log("RandNum:"+randNum); // 임시 게시물 번호
         console.log(result); // result[] = 다운로드가 될 파일리스트
@@ -440,6 +440,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
+    // id:업로더 아이디
     LswIsFileThereAPI:function (id){ // 파일 리스트에 올라간 파일 갯수 리턴
         try {
             var list = document.getElementById('UploadDiv_'+id);
@@ -488,6 +489,8 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
 
     },
 
+    // path:파일경로 , folder:폴더명, randNum:업로드때 부여된 임시랜덤번호
+    // postNum:파일 앞에 붙힐 고유번호, result:옮길 파일 이름+사이즈 배열
     LswMoveFileAPI:function (path,folder,randNum,postNum,result){ // 임시폴더에 있는 앞 파라미터 번호찾아서 뒷 파라미터로 바꾸기
         if(result!=null&&result!=undefined){
             var req2 = new XMLHttpRequest();
@@ -518,6 +521,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
     
+    // id:다운로더 아이디, path:파일경로, folder:폴더명, number:파일명 앞 고유번호
     LswFileDownAPI:function (id, path, folder, number){ // 리스트에 체크한 파일 다운로드
         try {
             var list = document.getElementById('DownloadDiv_'+id);
@@ -552,6 +556,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
+    // id:다운로더 아이디
     LswIsDownThereAPI:function (id){ // 다운로드 리스트에 올라간 파일 갯수 리턴
         try {
             var list = document.getElementById('DownloadDiv_'+id);
@@ -571,6 +576,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
+    // id:다운로더 아이디, postNum:파일명 앞 고유번호, path:파일경로, folder:폴더명
     LswRefreshAPI:function (id,postNum,path,folder){ // 다운로드창의 다운로드 리스트를 최신화
         try {
             var list = document.getElementById('DownloadDiv_'+id);
@@ -595,6 +601,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         return LSWUpDownPrototype.prototype.option.isIE;
     },
 
+    // id:업로더 아이디
     LswGetUpButtonPlaceAPI:function (id){ // 업로드 영역 Iframe 리턴
         try {
             var IFR = document.getElementById('UploadButtonPlace_'+id);
@@ -615,6 +622,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
+    // id:다운로더 아이디
     LswGetDownButtonPlaceAPI:function (id){ // 다운로드 영역 Iframe 리턴
         try {
             var IFR = document.getElementById('DownloadButtonPlace_'+id);
@@ -635,6 +643,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
+    // id:다운로더 아이디, filename:파일명, filesize:파일사이즈(bit)
     LswListItemAPI:function (id,filename,filesize){ // 다운로드 영역에 파일명, 크기 받아서 하나씩 추가
         try {
             var list = document.getElementById('DownloadDiv_'+id);
@@ -656,6 +665,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
+    // id:업로더 아이디, path:파일경로, folder:폴더명, number:파일 앞 고유번호
     LswFileDeleteAPI:function (id,path,folder,number){ // 경로 받아서 업로드된 파일 삭제
         try {
             var list = document.getElementById('DownloadDiv_'+id);
@@ -896,7 +906,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                         req.send(formData);
                     }
                     else if (tag == 'download') {
-                        LSWUpDownPrototype.prototype.eventList.OnStartDownload_LSW(LSW_RANDOM_NUMBER);
+                        LSWUpDownPrototype.prototype.eventList.OnStartDownload_LSW(LSW_RANDOM_NUMBER,controlList);
                         if(dn1!=''){dn1.style.display = 'none';}
                         LSWUpDownPrototype.prototype.funcList.ModalOn(modal, where, 'down');
                         

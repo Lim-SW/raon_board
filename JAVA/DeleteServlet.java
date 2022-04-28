@@ -31,9 +31,8 @@ public class DeleteServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		
-		String path = request.getParameter("path")+request.getParameter("folder");
+		String path = "";
 		String val = "";
-		
     	//MultipartRequest multi = new MultipartRequest(request, path, size, "UTF-8");
     	Enumeration<?> fileNames = request.getParameterNames();
     	LocalDateTime now = LocalDateTime.now();
@@ -49,8 +48,8 @@ public class DeleteServlet extends HttpServlet {
     	log+="==="+formdatenow+"==\n";
     	fileNames = request.getParameterNames();
     	while(fileNames.hasMoreElements()) {
-    		path = "D:\\LSWUpload\\Uploaded\\";
-			val = (String) fileNames.nextElement();
+    		path = request.getParameter("path")+request.getParameter("folder")+"\\";
+    		val = (String) fileNames.nextElement();
 			if(val.equals("postNum")) {
 				continue;
 			}

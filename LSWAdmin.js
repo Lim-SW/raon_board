@@ -264,6 +264,9 @@ function LSW_loginAdmin(id,pw,container,container2){
                 apply.innerText = '변경';
                 apply.className = 'apply';
                 apply.onclick = function(){
+                    if(text.value.slice(-1)!="\\"){
+                        text.value = text.value+="\\";
+                    }
                     ChangeDir(text.value);
                 }
                 div.appendChild(apply);
