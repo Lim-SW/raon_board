@@ -115,6 +115,15 @@ function viewjsp(number, content, userid, filelist){
                 filelist.pop();
                 for(var i=0;i<filelist.length;i++){
                     filelist[i] = filelist[i].split(',');
+                    if(filelist[i].length>2){
+                        var fn = "";
+                        for(var j=0;j<filelist[i].length-1;j++){
+                            fn+=filelist[i][j];
+                        }
+                        var fs = filelist[i][filelist[i].length-1];
+                        filelist[i][0] = fn;
+                        filelist[i][1] = fs;
+                    }
                     LSWdown.APIList.LswListItemAPI('LSWdown',filelist[i][0],filelist[i][1]);
                 }
             }
@@ -298,6 +307,15 @@ function modifyjsp(postNum, content, session, filelist){
                 filelist.pop();
                 for(var i=0;i<filelist.length;i++){
                     filelist[i] = filelist[i].split(',');
+                    if(filelist[i].length>2){
+                        var fn = "";
+                        for(var j=0;j<filelist[i].length-1;j++){
+                            fn+=filelist[i][j];
+                        }
+                        var fs = filelist[i][filelist[i].length-1];
+                        filelist[i][0] = fn;
+                        filelist[i][1] = fs;
+                    }
                     LSWdown.APIList.LswListItemAPI('LSWdown',filelist[i][0],filelist[i][1]);
                 }
             }
