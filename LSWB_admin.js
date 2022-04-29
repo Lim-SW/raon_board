@@ -1,4 +1,4 @@
-function login(){
+function login(){ // Admin 로그인
     var id = document.getElementById("admin_id");
     var pw = document.getElementById("admin_pw");
     var	container = document.getElementById("container");
@@ -7,7 +7,7 @@ function login(){
     LSW_loginAdmin(id,pw,container,container2);
 }
 
-function LSW_loginAdmin(id,pw,container,container2){
+function LSW_loginAdmin(id,pw,container,container2){ // 로그인시 UI펼치기
     window.onbeforeunload = function(){
         var formData = new FormData();
         formData.append('option','off');
@@ -295,7 +295,7 @@ function LSW_loginAdmin(id,pw,container,container2){
     }
 }
 
-function ChangeOption(select){
+function ChangeOption(select){ // 에디터, 업로더 옵션변경 (Wrapping)
     var selected = '';
     for(var i=0;i<select.childNodes.length;i++){
         if(select.childNodes[i].selected){
@@ -321,7 +321,7 @@ function ChangeOption(select){
     }
 }
 
-function RecoverUser(select){
+function RecoverUser(select){ // 삭제된 유저 복원
     var id = '';
     var rc;
     for(var i=0;i<select.childNodes.length;i++){
@@ -349,7 +349,7 @@ function RecoverUser(select){
     }
 }
 
-function DelUser(select){
+function DelUser(select){ // 유저 삭제
     var id = '';
     var rc;
     for(var i=0;i<select.childNodes.length;i++){
@@ -377,7 +377,7 @@ function DelUser(select){
     }
 }
 
-function RecoverPost(select){
+function RecoverPost(select){ // 삭제된 게시글 복원
     var postNum = 0;
     var rc;
     for(var i=0;i<select.childNodes.length;i++){
@@ -405,7 +405,7 @@ function RecoverPost(select){
     }
 }
 
-function DelPost(select){
+function DelPost(select){ // 게시글 삭제
     var postNum = 0;
     var rc;
     for(var i=0;i<select.childNodes.length;i++){
@@ -433,7 +433,7 @@ function DelPost(select){
     }
 }
 
-function ChangeDir(dir){
+function ChangeDir(dir){ // 업로드 경로 변경
     var formData = new FormData();
     formData.append('option','CD');
     formData.append('path',dir);

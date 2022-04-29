@@ -3,13 +3,12 @@
 <%@ page import="java.util.*"%>
 <%@ page import="LSWBoard.LSW_SQL" %>
 <!DOCTYPE html>
-<html lang=ko>
 <head>
     <link href="LSWB.css" rel="stylesheet" />
     <meta charset="UTF-8">
     <link href="favicon.ico" rel="icon" type="image/x-icon" />
 	<title>LSWBoard_admin</title>
-	<script src="LSWAdmin.js"></script>
+	<script src="LSWB_admin.js"></script>
 </head>
 
 <body>

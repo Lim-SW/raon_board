@@ -418,6 +418,7 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
 }
 
 LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
+    // id:업로더 아이디, fileList:파일 오브젝트
     LswFileLoadAPI:function (id,fileList){ // 파일 리스트에 올리기
         try {
             var list = document.getElementById('UploadDiv_'+id);
@@ -460,6 +461,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
     
+    // id:업로더 아이디, path:파일경로
     LswFileUpAPI:function (id,path){ // 리스트에 있는 파일 업로드
         try {
             var list = document.getElementById('UploadDiv_'+id);

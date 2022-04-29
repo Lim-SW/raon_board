@@ -1,4 +1,4 @@
-function LSWEditorPrototype(obj){
+function LSWEditorPrototype(obj){ // 프로토타입 객체
     this.option.id = obj.id;
     this.option.width = obj.width;
     this.option.height = obj.height;
@@ -7,7 +7,7 @@ function LSWEditorPrototype(obj){
     //this.loadFunc.LoadLSWEditor();
 }
 
-LSWEditorPrototype.prototype.option = {
+LSWEditorPrototype.prototype.option = { // 객체의 옵션(정보) (유저가 설정 or 기본값)
     id : "LSWDEFAULT",
     width : 600,
     height : 300,
@@ -15,7 +15,7 @@ LSWEditorPrototype.prototype.option = {
 }
 
 LSWEditorPrototype.prototype.loadFunc = {
-    LoadLSWEditor:function(){// 에디터 생성 함수
+    LoadLSWEditor:function(){ // 에디터 생성 함수
         var id = LSWEditorPrototype.prototype.option.id;
         var width = LSWEditorPrototype.prototype.option.width;
         var height = LSWEditorPrototype.prototype.option.height;

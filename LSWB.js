@@ -1,4 +1,4 @@
-function getOption(){
+function getOption(){ // Admin에 설정된 에디터, 업로더 옵션 번호 가져오기
     var req = new XMLHttpRequest();
     req.open('POST','/LSWBoard/LSW_ADMIN');
     var formData = new FormData();
@@ -11,9 +11,9 @@ function getOption(){
     }
 }
 
-function ongetoptiondone(response){}
+function ongetoptiondone(response){} // 에디터, 업로더 옵션 가져온 후 이벤트
 
-function getPath_A(){
+function getPath_A(){ // post path 가져오기
     var req = new XMLHttpRequest();
     req.open('POST','/LSWBoard/LSW_ADMIN');
     var formData = new FormData();
@@ -37,7 +37,7 @@ function getPath_A(){
     }
 }
 
-function getPath_P(number){
+function getPath_P(number){ // view(download), modify path 가져오기 
     var req = new XMLHttpRequest();
     req.open('POST','/LSWBoard/LSW_ADMIN');
     var formData = new FormData();
@@ -62,15 +62,17 @@ function getPath_P(number){
     }
 }
 
-function ongetpathdone(path){}
+function ongetpathdone(path){} // path 가져온 후 이벤트
 
-function viewjsp(number, content, userid, filelist){
+function viewjsp(number, content, userid, filelist){ // 열람 페이지 jsp 기능 wrapping
     var IFR = document.getElementById('ifr');
     var agent = navigator.userAgent.toLowerCase();
-    if((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)){
-        IFR.onload = function(){IFR.contentDocument.body.outerHTML = content;}
-    }
-    else{IFR.contentDocument.body.outerHTML = content;}
+    if(IFR!=null){
+		if((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)){
+        	IFR.onload = function(){IFR.contentDocument.body.outerHTML = content;}
+    	}
+    	else{IFR.contentDocument.body.outerHTML = content;}
+	}
 
     var del = document.getElementById('del');
     if(del!=null)del.onclick = function(){
@@ -119,6 +121,9 @@ function viewjsp(number, content, userid, filelist){
                         var fn = "";
                         for(var j=0;j<filelist[i].length-1;j++){
                             fn+=filelist[i][j];
+                            if(j<filelist[i].length-2){
+								fn+=",";
+							}
                         }
                         var fs = filelist[i][filelist[i].length-1];
                         filelist[i][0] = fn;
@@ -173,7 +178,7 @@ function viewjsp(number, content, userid, filelist){
     
 }
 
-function postjsp(session){
+function postjsp(session){ // 작성 페이지 jsp 기능 Wrapping
     var back = document.getElementById('back');
     if(back!=null)back.onclick = function (){
         window.location = document.referrer;
@@ -291,7 +296,7 @@ function postjsp(session){
     getOption();
 }
 
-function modifyjsp(postNum, content, session, filelist){
+function modifyjsp(postNum, content, session, filelist){ // 수정페이지 jsp 기능 Wrapping
     var back = document.getElementById('back');
     if(back!=null)back.onclick = function (){
         window.location = document.referrer;
@@ -311,6 +316,9 @@ function modifyjsp(postNum, content, session, filelist){
                         var fn = "";
                         for(var j=0;j<filelist[i].length-1;j++){
                             fn+=filelist[i][j];
+                            if(j<filelist[i].length-2){
+								fn+=",";
+							}
                         }
                         var fs = filelist[i][filelist[i].length-1];
                         filelist[i][0] = fn;
@@ -468,7 +476,7 @@ function modifyjsp(postNum, content, session, filelist){
     getOption();
 }
 
-function loginjsp(tf){
+function loginjsp(tf){ // 로그인페이지 jsp 기능 Wrapping
     if(!tf){location.href="http://112.136.138.139:6522/LSWBoard/LSWB_main.jsp";}
 	
     var acb = document.getElementById('acb');var egg = 0;
@@ -549,7 +557,7 @@ function loginjsp(tf){
 	}
 }
 
-function logout(){
+function logout(){ // 로그아웃 기능
     var formData = new FormData();
     formData.append('option','logout');
     var req = new XMLHttpRequest();
@@ -562,7 +570,7 @@ function logout(){
     }
 }
 
-function insert(result,postNum,path){
+function insert(result,postNum,path){ // DB에 파일정보 insert
     if(path.slice(-1)=="\\"){
         path = path.substr(0,path.length-1);
     }

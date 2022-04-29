@@ -35,8 +35,8 @@
 		    modify = modifyS[0];
 	    }
 	    else{modify = "Last Modified : -";}
-		if(number!=null){ %>
-    <div class = "center">
+		if(number!=null&&!title.equals("")){%>
+    	<div class = "center">
 			<div class="postTitle">
 	    	<h1><%=title %></h1>
 	    	<h5>Posted : <%=dateS[0] %></h5>
