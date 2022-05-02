@@ -55,7 +55,12 @@ public class DeleteServlet extends HttpServlet {
 			}
 			val = request.getParameter(val);
 			if(val.contains(".")) {
-				path += "["+postNum+"] "+val;
+				if(postNum.equals("")) {
+					path += val;
+				}
+				else {
+					path += "["+postNum+"] "+val;
+				}
 				file = new File(path);
 				file.delete();
 				log+="<파일삭제> "+val+"\n";

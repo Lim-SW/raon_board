@@ -62,6 +62,10 @@ public class MovefileServlet extends HttpServlet {
 				Path oldfile = Paths.get(path+"\\["+randNum+"] "+name);
 				Path newfile = Paths.get(realPath+"\\["+postNum+"] "+name);
 				File nf = new File(realPath+"\\["+postNum+"] "+name);
+				if(postNum.equals("")) {
+					newfile = Paths.get(realPath+"\\"+name);
+					nf = new File(realPath+"\\"+name);
+				}
 				int n = 1;
 				String newName = "";
 				while(nf.exists()) {
@@ -69,6 +73,10 @@ public class MovefileServlet extends HttpServlet {
 					newName = name.substring(0, li)+"("+n+")"+name.substring(li, name.length());
 					newfile = Paths.get(realPath+"\\["+postNum+"] "+newName);
 					nf = new File(realPath+"\\["+postNum+"] "+newName);
+					if(postNum.equals("")) {
+						newfile = Paths.get(realPath+"\\"+newName);
+						nf = new File(realPath+"\\"+newName);
+					}
 					n++;
 				}
 				if(newName!="") {log+="└><중복된 파일명 변경> "+newName+"\n";

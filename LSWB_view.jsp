@@ -21,6 +21,7 @@
         String modify = viewPage.getModified(number);
         String[] dateS = new String[1];
         String filelist = viewPage.getFiles(number);
+		String content = viewPage.getContent(number);
         
         if (date!=null){
             StringTokenizer stringTokenizer = new StringTokenizer( date, "." );
@@ -35,7 +36,9 @@
 		    modify = modifyS[0];
 	    }
 	    else{modify = "Last Modified : -";}
-		if(number!=null&&!title.equals("")){%>
+		if(number!=null&&title!=null){
+			if(!title.equals("")){
+		%>
     	<div class = "center">
 			<div class="postTitle">
 	    	<h1><%=title %></h1>
@@ -54,18 +57,16 @@
 		if(userid.equals((String)session.getAttribute("id"))){ %>
 		<button id="del" class="writebutton" type="button">게시글삭제</button>
 		<button id="modify" class="writebutton" type="button">게시글수정</button>
+		</div>
 		<%} %>
 		<%} %>
-	</div>
+	<%}else{ %>
+	<h1>This is not proper access</h1>
+	<%} %>
 	<%} else{ %>
 	<h1>This is not proper access</h1>
 	<%} %>
 </body>
-
-<% 	
-String content = new String("");
-content = viewPage.getContent(number);
-%>
 
 <script>
 	viewjsp("<%=number%>",'<%=content%>','<%=userid%>','<%=filelist%>');

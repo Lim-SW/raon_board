@@ -15,7 +15,7 @@ function LSWUpDownPrototype(obj) { // 프로토타입 객체
     if(this.option.isIE){ // IE에서 MAP 쓰기
         CustomMap = function(){
             this.map = new Object();
-        };
+        }
        
         CustomMap.prototype = {
         set : function(key, value){
@@ -32,7 +32,7 @@ function LSWUpDownPrototype(obj) { // 프로토타입 객체
         containsValue : function(value){
             for(var prop in this.map){
                 if(this.map[prop] == value) return true;
-            };
+            }
             return false;
         },
         isEmpty : function(){
@@ -41,7 +41,7 @@ function LSWUpDownPrototype(obj) { // 프로토타입 객체
         clear : function(){
             for(var prop in this.map){
                 delete this.map[prop];
-            };
+            }
         },
         remove : function(key){
             delete this.map[key];
@@ -50,24 +50,24 @@ function LSWUpDownPrototype(obj) { // 프로토타입 객체
             var keys = new Array();
             for(var prop in this.map){
                 keys.push(prop);
-            };
+            }
             return keys;
         },
         values : function(){
             var values = new Array();
             for(var prop in this.map){
                 values.push(this.map[prop]);
-            };
+            }
             return values;
         },
         size : function(){
             var count = 0;
             for (var prop in this.map) {
                 count++;
-            };
+            }
             return count;
         }
-        };
+        }
     }
 
     if (LSWUpDownPrototype.prototype.option.wl==null){
@@ -211,9 +211,9 @@ LSWUpDownPrototype.prototype.loadFunc = { // UI 생성 및 업&다운로드 기�
             fileListDiv.ondrop = function (e) {
                 if (e.target.id == 'UploadfileListDiv_' + id) { LSWUpDownPrototype.prototype.funcList.DragDrop(e,up[0],LSWUpDownPrototype.prototype.option.wl.get(id)); }
                 else { e.stopPropagation(); e.preventDefault(); }
-            };
-            fileListDiv.ondragover = function (e) { e.stopPropagation(); e.preventDefault(); };
-            fileListDiv.ondragleave = function (e) { e.stopPropagation(); e.preventDefault(); };
+            }
+            fileListDiv.ondragover = function (e) { e.stopPropagation(); e.preventDefault(); }
+            fileListDiv.ondragleave = function (e) { e.stopPropagation(); e.preventDefault(); }
 
             Place.addEventListener('load', function () {
                 Place.contentDocument.body.appendChild(nameDiv);
@@ -252,7 +252,7 @@ LSWUpDownPrototype.prototype.loadFunc = { // UI 생성 및 업&다운로드 기�
                 progressBar2.style.width = '0%';
                 percent.innerText = '0%\n';
                 modal.style.display = 'none';
-            };
+            }
             modalWindow.appendChild(closeArea);
 
             // 진행바 영역
@@ -414,7 +414,7 @@ LSWUpDownPrototype.prototype.eventList = { // 유저가 사용할 이벤트 함�
         console.log("Default Message : 파일 업로드 체크 후 메인폴더로 이동 완료");
         console.log(folder); // 옮겨진 폴더명
         console.log(result); // 옮겨진 파일 목록
-    },
+    }
 }
 
 LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
@@ -475,7 +475,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
             if(list.childNodes[1]!= undefined){
                 var up1 = list.childNodes[1].contentDocument.body.childNodes[0];
             }
-            else{var up1 = ''};
+            else{var up1 = ''}
             
             LSWUpDownPrototype.prototype.funcList.SendWaitList(path,'',id,up0,up1,
                 LSWUpDownPrototype.prototype.option.wl.get(id),
@@ -493,7 +493,8 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
 
     // path:파일경로 , folder:폴더명, randNum:업로드때 부여된 임시랜덤번호
     // postNum:파일 앞에 붙힐 고유번호, result:옮길 파일 이름+사이즈 배열
-    LswMoveFileAPI:function (path,folder,randNum,postNum,result){ // 임시폴더에 있는 앞 파라미터 번호찾아서 뒷 파라미터로 바꾸기
+    // postNum이 "" (공백) 이면 앞에 태그를 붙히지 않고 파일명 그대로 옮김
+    LswMoveFileAPI:function (path,folder,randNum,postNum,result){ // 임시폴더에 있는 randNum의 태그 파일을
         if(result!=null&&result!=undefined){
             var req2 = new XMLHttpRequest();
             var formData2 = new FormData();
@@ -521,10 +522,10 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         else{
             LSWUpDownPrototype.prototype.eventList.OnMoveFileDone_LSW(result,folder);
         }
-    },
+    },                                                            // postNum 태그로 변경 후 파일을 path+folder로 옮김
     
-    // id:다운로더 아이디, path:파일경로, folder:폴더명, number:파일명 앞 고유번호
-    LswFileDownAPI:function (id, path, folder, number){ // 리스트에 체크한 파일 다운로드
+    // id:다운로더 아이디, path:파일경로, folder:폴더명, postNum:파일명 앞 고유번호 option:"tag" 이면 파일명에 tag를 붙혀서줌
+    LswFileDownAPI:function (id, path, folder, postNum, option){ // 리스트에 체크한 파일 다운로드
         try {
             var list = document.getElementById('DownloadDiv_'+id);
             if(list==undefined){
@@ -544,9 +545,9 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
             if(list.childNodes[1].contentDocument!= undefined){
                 var dn1 = list.childNodes[1].contentDocument.body.childNodes[0];
             }
-            else{var dn1 = ''};
-            LSWUpDownPrototype.prototype.funcList.ControlFile(path,folder,number,where, 'download', id, 
-                LSWUpDownPrototype.prototype.option.wl.get(id),formSend,dn1);
+            else{var dn1 = ''}
+            LSWUpDownPrototype.prototype.funcList.ControlFile(path,folder,postNum,where, 'download', id, 
+                LSWUpDownPrototype.prototype.option.wl.get(id),formSend,dn1,option);
             list.removeChild(tempForm);
         } catch (e) {
             if(e instanceof TypeError){
@@ -667,8 +668,8 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
         }
     },
 
-    // id:업로더 아이디, path:파일경로, folder:폴더명, number:파일 앞 고유번호
-    LswFileDeleteAPI:function (id,path,folder,number){ // 경로 받아서 업로드된 파일 삭제
+    // id:업로더 아이디, path:파일경로, folder:폴더명, postNum:파일 앞 고유번호
+    LswFileDeleteAPI:function (id,path,folder,postNum){ // 경로 받아서 업로드된 파일 삭제
         try {
             var list = document.getElementById('DownloadDiv_'+id);
             if(list==undefined){
@@ -677,7 +678,7 @@ LSWUpDownPrototype.prototype.APIList = { // 유저가 사용할 API
             }
             else{
                 list = list.childNodes[0].contentDocument.body.childNodes[1];
-                LSWUpDownPrototype.prototype.funcList.ControlFile(path,folder,number,list,'delete',id,LSWUpDownPrototype.prototype.option.wl.get(id));
+                LSWUpDownPrototype.prototype.funcList.ControlFile(path,folder,postNum,list,'delete',id,LSWUpDownPrototype.prototype.option.wl.get(id));
             }
         } catch (e) {
             if(e instanceof TypeError){
@@ -715,27 +716,26 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
         tempFileDiv.ondrop = function (e) {
             var id = e.target.parentNode.id.split('_')[1];
             LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
-        };
+        }
         checkBox.ondrop = function (e) {
             var id = e.target.parentNode.parentNode.id.split('_')[1];
             LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
-        };
+        }
         fileSize.ondrop = function (e) {
             var id = e.target.parentNode.parentNode.id.split('_')[1];
             LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
-        };
+        }
         span.ondrop = function (e) {
             var id = e.target.parentNode.parentNode.id.split('_')[1];
             LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
-        };
+        }
 
         where.appendChild(tempFileDiv);
     },
 
     BytesToSize:function (bytes) { // 파일크기 단위 변경
         var sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-        if (bytes == 0)
-            return '0 Byte';
+        if (bytes == 0){return '0 B';}
         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
     },
@@ -794,18 +794,15 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                         modal.style.display = 'none';
                         if(up1!=''){up1.style.display = 'flex';}
                     }
-                };
+                }
                 modal.childNodes[0].childNodes[5].onclick = function () {
                     modal.style.display = 'none';
                     if(up1!=''){up1.style.display = 'flex';}
-                };
+                }
             }
             else {
                 LSWUpDownPrototype.prototype.funcList.ResumeFunc(path,randNum, modal, pauseB, up0, up1, wl, id, result);
             }
-        }
-        else {
-            //alert('파일을 추가해주세요.');
         }
     },
 
@@ -815,7 +812,6 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
     },
 
     ListFiles:function(where, postNum, path, folder) { // 다운로드 리스트에 파일 불러오기(새로고침)
-        //if(postNum==undefined){alert('')}
         var req = new XMLHttpRequest();
         req.open('POST', '/LSWBoard/RefreshServlet');
         var formData = new FormData();
@@ -844,7 +840,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
         }
     },
 
-    ControlFile:function(path, folder, number, where, tag, id, wl, startDownload, dn1) { // 체크된 파일 컨트롤(제외,삭제,다운로드)
+    ControlFile:function(path, folder, number, where, tag, id, wl, startDownload, dn1, option) { // 체크된 파일 컨트롤(제외,삭제,다운로드)
         var flag = 0;
         var controlList = [];
         var message = '';
@@ -897,7 +893,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                         if(w!=controlList.length-1){temptemp.name = 'name' + w;}
                         else{temptemp.name = "randomNumber";}
                         temptemp.value = controlList[w];
-                        if(tag == 'download'){startDownload[0].appendChild(temptemp)};
+                        if(tag == 'download'){startDownload[0].appendChild(temptemp)}
                     }
 
                     if (tag == 'delete') {
@@ -914,6 +910,11 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                         
                         var temptemp = document.createElement('input');
                         temptemp.type = 'hidden';
+                        temptemp.name = 'option';
+                        temptemp.value = option;
+                        startDownload[0].appendChild(temptemp);
+                        var temptemp = document.createElement('input');
+                        temptemp.type = 'hidden';
                         temptemp.name = 'postNum';
                         temptemp.value = number;
                         startDownload[0].appendChild(temptemp);
@@ -926,7 +927,6 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                         temptemp.type = 'hidden';
                         temptemp.name = 'folder';
                         temptemp.value = folder;
-                        
                         startDownload[0].appendChild(temptemp);
                         startDownload[0].submit();
                         var isZip = w > 2;
@@ -964,7 +964,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                             if(dn1!=''){dn1.style.display = 'flex';}
                             LSWUpDownPrototype.prototype.eventList.OnError_LSW(req.status);
                         }
-                    };
+                    }
                 }
             }
         }
@@ -1011,12 +1011,12 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                                 LSWUpDownPrototype.prototype.funcList.ModalOff(modal, "(" + req.status + ")오류가 발생하였습니다.", where);
                                 LSWUpDownPrototype.prototype.eventList.OnError_LSW(req.status);
                             }
-                        };
+                        }
                     }
-                };
+                }
                 modal.childNodes[0].childNodes[5].onclick = function () {
                     modal.style.display = 'none';
-                };
+                }
             }
             else {
                 where.innerHTML = '';
@@ -1067,7 +1067,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                 }
                 modal.childNodes[0].childNodes[2].childNodes[0].style.width = percent + "%";
             }
-        };
+        }
     },
 
     ModalYesNo:function(modal, message, where) { // 컨펌모달
@@ -1127,10 +1127,10 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
 
                     modal.childNodes[0].childNodes[6].onclick = function () {
                         LSWUpDownPrototype.prototype.funcList.UploadFunc(path,randNum, modal, pauseB, res[2], up0, up1, wl, id, result, 'YES');
-                    };
+                    }
                     modal.childNodes[0].childNodes[5].onclick = function () {
                         LSWUpDownPrototype.prototype.funcList.UploadFunc(path,randNum, modal, pauseB, 0, up0, up1, wl, id, result, 'NO');
-                    };
+                    }
                 }
                 else {
                     LSWUpDownPrototype.prototype.funcList.UploadFunc(path,randNum, modal, pauseB, 0, up0, up1, wl, id, result, 'NO');
@@ -1142,10 +1142,10 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
     UploadFunc:function(path, randNum, modal, pauseB, offset, up0, up1, wl, id, result, yesno) { // 업로드 리퀘스트 및 프로세스 함수화
         offset = Number(offset);
         LSWUpDownPrototype.prototype.funcList.ModalOn(modal, up0);
-        var filename = wl[0].name; // formData.get('name');
-        var fullsize = wl[0].sizeN; // formData.get(formData.get('name')+' size');
+        var filename = wl[0].name;
+        var fullsize = wl[0].sizeN;
         if (filename.length > 12) { filename = filename.substring(0, 12) + "...."; }
-        var term = 1024 * 1024 * 100;
+        var term = 1024 * 1024 * 20;
         if(term > fullsize-offset){term = fullsize-offset;}
         var chunk = wl[0].file.slice(offset, offset + term);
 
@@ -1170,7 +1170,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                 modal.childNodes[0].childNodes[2].childNodes[0].style.width = percentComplete + "%";
                 modal.childNodes[0].childNodes[3].innerText = filename + " ☞ " + percentComplete + "%";
             }
-        };
+        }
         req.send(formData);
         req.onreadystatechange = function () {
             if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
@@ -1179,12 +1179,6 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                     LSWUpDownPrototype.prototype.funcList.UploadFunc(path,randNum, modal, pauseB, offset, up0, up1, wl, id, result);
                 }
                 else {
-                    /*
-                    if (LSWUpDownPrototype.prototype.option.isIE) { var temp = modal.parentElement.childNodes[1].childNodes[0]; temp.parentNode.removeChild(temp); }
-                    else { modal.parentElement.childNodes[1].childNodes[0].remove(); }
-                    */ // 2022.04.15
-                    //var isDn = document.getElementById('DownloadPlace_'+id);
-                    //if(isDn != null){LSWUpDownPrototype.prototype.funcList.ListFiles(isDn.contentDocument.body.childNodes[1])};
                     modal.childNodes[0].childNodes[2].childNodes[0].style.width = '100%';
                     result.push(wl.shift());
                     if (wl.length != 0) {
@@ -1204,7 +1198,7 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
                 LSWUpDownPrototype.prototype.eventList.OnError_LSW(req.status);
                 LSWUpDownPrototype.prototype.option.result.set(id,[]);
             }
-        };
+        }
         pauseB.onclick = function () {
             if (req.readyState != XMLHttpRequest.DONE) {
                 req.abort();

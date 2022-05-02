@@ -24,7 +24,7 @@ function getPath_A(){ // post path 가져오기
             var temp = req.responseText;
             var folder = temp.split("\\");
             if(folder.length>2){folder.pop();folder = folder[folder.length-1];}
-            else{folder=''};
+            else{folder='';}
             if(folder==''){
                 var path = temp.split('\\')[0]+"\\";
             }
@@ -49,7 +49,7 @@ function getPath_P(number){ // view(download), modify path 가져오기
             var temp = req.responseText;
             var folder = temp.split("\\");
             if(folder.length>2){folder.pop();folder = folder[folder.length-1];}
-            else{folder=''};
+            else{folder='';}
             if(folder==''){
                 var path = temp.split('\\')[0]+"\\";
             }
@@ -200,7 +200,7 @@ function postjsp(session){ // 작성 페이지 jsp 기능 Wrapping
                 var title = document.getElementById('title');
                 var content = LSWEditor.APIList.getLSWEditPlaceValueById('lsw1');
                 var userid = session;
-                if(title.value==''){
+                if(title.value==''||title.value.replace(/ /gi,'')==''){
                     alert('제목을 입력해주세요.');	
                 }
                 else{

@@ -119,7 +119,7 @@ public class LSW_ADMIN extends HttpServlet {
                 	}
             	}
             	else if(option.equals("CD")) {
-            		stmt.executeUpdate("UPDATE LSW_admin SET path='"+request.getParameter("path")+"' where id='dlj0605';");
+            		stmt.executeUpdate("UPDATE LSW_admin SET path='"+request.getParameter("path")+"';");
             		response.getWriter().write("완료");
             	}
             	else if(option.equals("DP")) {

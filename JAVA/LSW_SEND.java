@@ -30,7 +30,14 @@ public class LSW_SEND extends HttpServlet {
     	response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		String title = request.getParameter("title");
+		if(title!=null) {
+			title = title.replaceAll("'","");
+		}
 		String content = request.getParameter("content");
+		if(content!=null) {
+			content = content.replaceAll("'","");
+		}
+		
 		String userid = request.getParameter("userid");
 		String option = request.getParameter("option");
 		
@@ -80,7 +87,7 @@ public class LSW_SEND extends HttpServlet {
             stmt = connection.createStatement();
             
             if(option.equals("modify")) {
-            	stmt.executeUpdate("UPDATE LSW_post SET title='"+title+"', content='"+content+"', modified=GETUTCDATE() where number="+number);
+            	stmt.executeUpdate("UPDATE LSW_post SET title='"+title+"', content='"+content+"', modified=getdate() at time zone 'Korea Standard Time' where number="+number);
             }
             else if(option.equals("delete")) {
             	stmt.executeUpdate("DELETE FROM LSW_files where postNum ="+number+" AND name ='"+filename+"'");
@@ -89,7 +96,7 @@ public class LSW_SEND extends HttpServlet {
             	stmt.executeUpdate("insert into LSW_files values ("+number+",'"+filename+"',"+filesize+", '"+path+"')");
             }
             else {
-            	stmt.executeUpdate("insert into LSW_post values ("+number+",'"+title+"','"+userid+"',GETUTCDATE(),null,'"+content+"',0)");
+            	stmt.executeUpdate("insert into LSW_post values ("+number+",'"+title+"','"+userid+"',getdate() at time zone 'Korea Standard Time' ,null,'"+content+"',0)");
             }
         }
         catch (SQLException e) {

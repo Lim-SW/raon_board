@@ -50,7 +50,6 @@ public class DownloadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
-		
 		String path = request.getParameter("path")+request.getParameter("folder")+"\\";
 		String val = "";
 		LocalDateTime now = LocalDateTime.now();
@@ -70,19 +69,31 @@ public class DownloadServlet extends HttpServlet {
 		double percent = 0;
 		String postNum = request.getParameter("postNum");
 		String fn = "";
+		String option = request.getParameter("option").toLowerCase();;
 
 		log+="========="+ip+"=========\n";
     	log+="==="+formdatenow+"==\n";
+    	log+="postNum : ["+postNum+"]\n";
     	while(fileNames.hasMoreElements()) {
     		path = request.getParameter("path")+request.getParameter("folder")+"\\";
 			val = (String) fileNames.nextElement();
 			val = request.getParameter(val);
 			if(val.contains(".")) {
 				fn=val;
-				path += "["+postNum+"] "+val;
+				if(postNum.equals("")) {
+					path += val;
+				}
+				else {
+					path += "["+postNum+"] "+val;
+				}
 				file = new File(path);
 				files.add(file);
-				log+="<다운로드> "+val+"\n";
+				if(postNum.equals("")) {
+					log+="<다운로드> "+val+"\n";
+				}
+				else {
+					log+="<다운로드> "+"["+postNum+"] "+val+"\n";
+				}
 			}
 			else {
 				percentIp.put(ip+","+randomnumber,0);
@@ -91,7 +102,9 @@ public class DownloadServlet extends HttpServlet {
 
 		log+="=================================";
 		if(files.size()>1) {
-			File zip = new File("D:\\LSWUpload\\LSWUp&Down_"+ip+", "+formdatenow+".zip");
+			File Folder = new File(request.getParameter("path")+request.getParameter("folder")+"\\LSWDownZip");
+			if (!Folder.exists()) {Folder.mkdir();}
+			File zip = new File(request.getParameter("path")+request.getParameter("folder")+"\\LSWDownZip\\"+"LSWUp&Down_"+ip+", "+formdatenow+".zip");
 			//System.out.println(zip);
 			byte[] b =new byte[10000];
 			for (File f : files) {whole += f.length();}
@@ -100,8 +113,10 @@ public class DownloadServlet extends HttpServlet {
 	            for (File f : files) {
 	            	String tag = "["+postNum+"] ";
 	            	path = request.getParameter("path")+request.getParameter("folder")+"\\";
-	            	f.renameTo(new File(path+f.getName().replace(tag, "")));
-	            	f = new File(path+f.getName().replace(tag, ""));
+	            	if(!option.equals("tag")) {
+		            	f.renameTo(new File(path+f.getName().replace(tag, "")));
+		            	f = new File(path+f.getName().replace(tag, ""));
+	            	}
 	                try (FileInputStream in = new FileInputStream(f)) {
 	                    ZipEntry ze = new ZipEntry(f.getName());
 	                    out.putNextEntry(ze);
@@ -122,7 +137,9 @@ public class DownloadServlet extends HttpServlet {
 	                    b = new byte[10000];
 	                    out.closeEntry();
 	                }
-	                f.renameTo(new File(path+tag+f.getName()));
+	            	if(!option.equals("tag")) {
+	            		f.renameTo(new File(path+tag+f.getName()));
+	            	}
 	            }
 	            percent = 100.00;
 	            percentIp.put(ip+","+randomnumber,percent);
@@ -157,7 +174,13 @@ public class DownloadServlet extends HttpServlet {
 			String mimeType = getServletContext().getMimeType(file.toString());
 			mimeType = "application/octet-stream";
 			response.setContentType(mimeType);
-			String fileName = fn;
+			String fileName = "";
+        	if(!option.equals("tag")) {
+        		fileName = fn;
+        	}
+        	else {
+        		fileName = "["+postNum+"] "+fn;
+        	}
 			String sEncoding = new String(fileName.getBytes("UTF-8"),"8859_1");
 		    String value = "attachment;filename=\""+sEncoding+"\"";
 		    response.setHeader("Content-Disposition", value);

@@ -239,7 +239,7 @@ public class LSW_SQL {
  
         try (Connection connection = DriverManager.getConnection(connectionUrl);) {
         	Statement stmt = connection.createStatement();
-        	ResultSet rs = stmt.executeQuery("SELECT name, size FROM LSW_files where postNum="+num);
+        	ResultSet rs = stmt.executeQuery("SELECT name, size FROM LSW_files where postNum="+num+" order by name;");
 	        String result = "";
 	        while(rs.next()) {
 	        	result += rs.getString(1)+","+rs.getString(2)+"/";
