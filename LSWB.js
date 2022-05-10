@@ -296,11 +296,14 @@ function postjsp(session){ // 작성 페이지 jsp 기능 Wrapping
     getOption();
 }
 
-function modifyjsp(postNum, content, session, filelist){ // 수정페이지 jsp 기능 Wrapping
+function modifyjsp(postNum, content, session, filelist, title){ // 수정페이지 jsp 기능 Wrapping
     var back = document.getElementById('back');
     if(back!=null)back.onclick = function (){
         window.location = document.referrer;
     }
+    
+    var titleT = document.getElementById('title');
+    titleT.value = title;
     
     ongetoptiondone = function(response){
         //////////////////////////// LSW 이면 ////////////////////////////

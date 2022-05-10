@@ -31,11 +31,11 @@ public class LSW_SEND extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		String title = request.getParameter("title");
 		if(title!=null) {
-			title = title.replaceAll("'","");
+			title = title.replaceAll("'","''");
 		}
 		String content = request.getParameter("content");
 		if(content!=null) {
-			content = content.replaceAll("'","");
+			content = content.replaceAll("'","''");
 		}
 		
 		String userid = request.getParameter("userid");
@@ -69,10 +69,12 @@ public class LSW_SEND extends HttpServlet {
         	else if(option.equals("delete")) {
         		number = request.getParameter("postNum");
         		filename = request.getParameter("filename");
+        		filename = filename.replaceAll("'", "''");
         	}
         	else if(option.equals("insert")) {
         		number = request.getParameter("postNum");
         		filename = request.getParameter("filename");
+        		filename = filename.replaceAll("'", "''");
         		filesize = request.getParameter("filesize");
         		path = request.getParameter("path")+"\\["+number+"] "+filename;
         	}

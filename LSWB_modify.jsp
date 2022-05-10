@@ -15,8 +15,10 @@
 	String postNum = request.getParameter("postNum");
 	LSW_SQL lsql = new LSW_SQL();
 	String title = lsql.getTitle(postNum);
+	title = title.replace("'","\\'");
 	String userid = lsql.getUserId(postNum);
 	String content = lsql.getContent(postNum);
+	content = content.replace("'","\\'");
 	String filelist = lsql.getFiles(postNum);
 	
 	if(userid.equals((String)session.getAttribute("id"))) {  %>		
@@ -24,7 +26,7 @@
 		<div id="sample">
 			<div>
     			<h3>Title: </h3>
-    			<input id="title" class = 'titleInput' type="text" maxlength='30' placeholder="제목을 입력해주세요. (최대 30글자)" value='<%=title%>'></input>
+    			<input id="title" class = 'titleInput' type="text" maxlength='50' placeholder="제목을 입력해주세요. (최대 50글자)"></input>
     		</div>
     	</div>
     	<button id="back" class="writebutton" type="button">취소</button>
@@ -37,7 +39,7 @@
 </body>
 
 <script>
-	modifyjsp('<%=postNum%>', '<%=content%>','<%=(String)session.getAttribute("id")%>','<%=filelist%>');
+	modifyjsp('<%=postNum%>', '<%=content%>','<%=(String)session.getAttribute("id")%>',"<%=filelist%>", '<%=title%>');
 </script>
 
 </html>

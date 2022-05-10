@@ -22,7 +22,9 @@
         String[] dateS = new String[1];
         String filelist = viewPage.getFiles(number);
 		String content = viewPage.getContent(number);
-        
+		if(content!=null){
+			content = content.replace("'","\\'");   	
+		}
         if (date!=null){
             StringTokenizer stringTokenizer = new StringTokenizer( date, "." );
             dateS = new String[stringTokenizer.countTokens()];                    
@@ -69,7 +71,7 @@
 </body>
 
 <script>
-	viewjsp("<%=number%>",'<%=content%>','<%=userid%>','<%=filelist%>');
+	viewjsp("<%=number%>",'<%=content%>','<%=userid%>',"<%=filelist%>");
 </script>
 
 </html>

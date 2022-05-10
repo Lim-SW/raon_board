@@ -166,7 +166,7 @@ function LSW_loginAdmin(id,pw,container,container2){ // 로그인시 UI펼치기
         req.send(formData);
         req.onreadystatechange = function () {
             if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-                var first = req.responseText.split(',');
+                var first = req.responseText.split('|*|');
                 var deletedList = {'key':'deleted'};
                 var div = document.createElement('div');
                 div.className = "selectcontainer";
@@ -177,7 +177,7 @@ function LSW_loginAdmin(id,pw,container,container2){ // 로그인시 UI펼치기
 
                 var deleted = [];
                 for(var i=0;i<first.length-1;i++){
-                    var temp = first[i].split('/');
+                    var temp = first[i].split('|$|');
                     deleted.push(temp[0]+":"+temp[2]+" - "+temp[1]);
                 }
 
@@ -206,7 +206,7 @@ function LSW_loginAdmin(id,pw,container,container2){ // 로그인시 UI펼치기
         req.send(formData);
         req.onreadystatechange = function () {
             if (req.readyState == XMLHttpRequest.DONE && req.status == 200) {
-                var first = req.responseText.split(',');
+                var first = req.responseText.split('|*|');
                 var postList = {'key':'post'};
                 var div = document.createElement('div');
                 div.className = "selectcontainer";
@@ -217,7 +217,7 @@ function LSW_loginAdmin(id,pw,container,container2){ // 로그인시 UI펼치기
 
                 var post = [];
                 for(var i=0;i<first.length-1;i++){
-                    var temp = first[i].split('/');
+                    var temp = first[i].split('|$|');
                     post.push(temp[0]+":"+temp[2]+" - "+temp[1]);
                 }
 

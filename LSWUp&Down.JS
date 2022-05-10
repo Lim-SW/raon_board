@@ -730,6 +730,24 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
             LSWUpDownPrototype.prototype.funcList.DragDrop(e,e.target.parentNode.parentNode,LSWUpDownPrototype.prototype.option.wl.get(id));
         }
 
+        tempFileDiv.onclick = function(){
+            if(checkBox.checked){
+                checkBox.checked = false;
+            }
+            else{
+                checkBox.checked = true;
+            }
+        }
+
+        checkBox.onclick = function(){
+            if(checkBox.checked){
+                checkBox.checked = false;
+            }
+            else{
+                checkBox.checked = true;
+            }
+        }
+
         where.appendChild(tempFileDiv);
     },
 
@@ -741,37 +759,41 @@ LSWUpDownPrototype.prototype.funcList = { // 기능 함수 모음
     },
 
     Addfile:function (th, where, wl) { // 파일추가 기능
-        var same = '개 제외하였습니다.\n';
-        var add = '개의 파일을 추가하였습니다.\n';
-        var sameCount = 0;
         if(th.files){var files = th.files;}
         else{var files = th}
         for (var f = 0; f < files.length; f++) {
             var tempF = files[f];
             var calSize = tempF.size;
-            var flag = 0;
             for (var u = 0; u < where.childNodes.length; u++) {
                 if(where.childNodes[u].childNodes[1]!=undefined){
                     if (where.childNodes[u].childNodes[1].innerText == tempF.name) {
-                        same += ('>>> ' + tempF.name + '\n');
-                        sameCount += 1;
-                        flag = 1;
-                        break;
+                        var n = 1;
+                        var li = tempF.name.lastIndexOf(".");
+                        var flag = true;
+                        while(flag){
+                            flag = false;
+					        var newName = tempF.name.substring(0, li)+"("+n+")"+tempF.name.substring(li, tempF.name.length);
+                            for(var q = 0; q < where.childNodes.length; q++){
+                                if(where.childNodes[q].childNodes[1].innerText == newName){
+                                    flag = true;
+                                }
+                            }
+                            n++;
+                        }
+                        tempF.name = newName;                  
                     }
                 }
                 else{return;}
             }
-            if (flag == 0) {
-                add += ('>>> ' + tempF.name + '\n');
+            if(newName!=undefined){
+                LSWUpDownPrototype.prototype.funcList.LoadFile(where, newName, calSize);
+                wl.push({ 'name': newName, 'size': calSize, 'file': tempF, 'sizeN': tempF.size });
+            }
+            else{
                 LSWUpDownPrototype.prototype.funcList.LoadFile(where, tempF.name, calSize);
                 wl.push({ 'name': tempF.name, 'size': calSize, 'file': tempF, 'sizeN': tempF.size });
             }
         }
-        same = '중복된 파일을 ' + sameCount + same;
-        if (files.length - sameCount != 0) {
-            same += ('\n중복되지 않은 ' + (files.length - sameCount) + add);
-        }
-        if (sameCount > 0) { alert(same); }
         if(th.type=='file'){th.value = '';}
     },
 

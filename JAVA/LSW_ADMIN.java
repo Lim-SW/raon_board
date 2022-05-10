@@ -109,13 +109,13 @@ public class LSW_ADMIN extends HttpServlet {
             	else if(option.equals("4")) {
             		ResultSet rs = stmt.executeQuery("SELECT number, title, userid from LSW_post where isDeleted=1");
                 	while(rs.next()) {
-                		response.getWriter().write(rs.getString(1)+"/"+rs.getString(2)+"/"+rs.getString(3)+",");
+                		response.getWriter().write(rs.getString(1)+"|$|"+rs.getString(2)+"|$|"+rs.getString(3)+"|*|");
                 	}
             	}
             	else if(option.equals("5")) {
             		ResultSet rs = stmt.executeQuery("SELECT number, title, userid from LSW_post where isDeleted=0");
                 	while(rs.next()) {
-                		response.getWriter().write(rs.getString(1)+"/"+rs.getString(2)+"/"+rs.getString(3)+",");
+                		response.getWriter().write(rs.getString(1)+"|$|"+rs.getString(2)+"|$|"+rs.getString(3)+"|*|");
                 	}
             	}
             	else if(option.equals("CD")) {

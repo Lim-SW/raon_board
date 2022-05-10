@@ -15,7 +15,7 @@
 		<div id="sample">
 		    <div>
     			<h3>Title: </h3>
-    			<input id="title" class = 'titleInput' type="text" maxlength='30' placeholder="제목을 입력해주세요. (최대 30글자)"></input>
+    			<input id="title" class = 'titleInput' type="text" maxlength='50' placeholder="제목을 입력해주세요. (최대 50글자)"></input>
     		</div>
 		</div>
 		<button id="back" class="writebutton" type="button">취소</button>
